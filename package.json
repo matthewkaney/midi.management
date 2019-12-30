@@ -1,0 +1,29 @@
+{
+  "name": "midi-monitor",
+  "version": "0.0.0",
+  "description": "React-based web midi monitor",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mindofmatthew/midi-monitor.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/mindofmatthew/midi-monitor/issues"
+  },
+  "homepage": "https://github.com/mindofmatthew/midi-monitor#readme",
+  "dependencies": {
+    "@musedlab/midi": "file:../music-interface-toolkit/packages/midi",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "parcel": "^2.0.0-alpha.3.2"
+  }
+}
