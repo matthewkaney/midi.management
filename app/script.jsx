@@ -12,13 +12,30 @@ for (let status of Object.values(Status)) {
 }
 
 function MidiMonitor() {
+  // Filters for different message types
   let [statusFilter, setStatusFilter] = useState(defaultStatusFilter);
 
+  // List of connected Midi Inputs and related filters
   let [midiInputs, setMidiInputs] = useState([]);
+  let [midiFilter, setMidiFilter] = useState({});
 
   useEffect(() => {
-    return receiveMidiInputs(setMidiInputs);
-  }, [setMidiInputs]);
+    return receiveMidiInputs(inputs => {
+      setMidiFilter(filter => {
+        let newInputs = {};
+
+        for (let input of inputs) {
+          if (!(input.id in filter)) {
+            newInputs[input.id] = true;
+          }
+        }
+
+        return { ...newInputs, ...filter };
+      });
+
+      setMidiInputs(inputs);
+    });
+  }, [setMidiInputs, setMidiFilter]);
 
   let [messages, setMessages] = useState([]);
 
@@ -26,25 +43,25 @@ function MidiMonitor() {
     return receiveMIDI(message => {
       message = parseMidiMessage(message);
 
-      if (statusFilter[message.status]) {
-        setMessages(m => [message, ...m]);
+      if (statusFilter[message.status] && midiFilter[message.input.id]) {
+        setMessages(m => [message, ...m].slice(0, 200));
       }
     });
-  }, [statusFilter, setMessages]);
+  }, [statusFilter, midiFilter, setMessages]);
 
   return (
     <section>
       <h1>Midi Monitor</h1>
       <h2>Filters</h2>
       <h3>Inputs</h3>
-      <FilterList filter={{}}>
+      <FilterList filter={midiFilter} changeFilter={setMidiFilter}>
         {midiInputs.map(({ id, name, manufacturer }) => (
           <Filter id={id}>
             {manufacturer} {name}
           </Filter>
         ))}
       </FilterList>
-      <h3>Devices</h3>
+      <h3>Messages</h3>
       <FilterList filter={statusFilter} changeFilter={setStatusFilter}>
         <StatusFilter id={Status.NOTE_OFF} />
         <StatusFilter id={Status.NOTE_ON} />
@@ -65,7 +82,6 @@ function MidiMonitor() {
         <StatusFilter id={Status.ACTIVE_SENSING} />
         <StatusFilter id={Status.RESET} />
       </FilterList>
-      <h3>Messages</h3>
       <h2>Events</h2>
       <ul>
         {messages.map((m, i) => (
@@ -80,11 +96,13 @@ function MidiMessage({ message }) {
   return (
     <li>
       <b>
-        {new Date(
-          performance.timing.navigationStart + message.time
-        ).toLocaleTimeString()}
+        {new Date(performance.timeOrigin + message.time).toLocaleTimeString()}
       </b>
       {Names[message.status]}
+      <br />
+      {message.input.manufacturer} {message.input.name}
+      <br />
+      {message.value}
     </li>
   );
 }
