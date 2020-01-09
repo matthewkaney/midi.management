@@ -50,45 +50,48 @@ function MidiMonitor() {
   }, [statusFilter, midiFilter, setMessages]);
 
   return (
-    <section>
-      <h1>Midi Monitor</h1>
-      <h2>Filters</h2>
-      <h3>Inputs</h3>
-      <FilterList filter={midiFilter} changeFilter={setMidiFilter}>
-        {midiInputs.map(({ id, name, manufacturer }) => (
-          <Filter id={id}>
-            {manufacturer} {name}
-          </Filter>
-        ))}
-      </FilterList>
-      <h3>Messages</h3>
-      <FilterList filter={statusFilter} changeFilter={setStatusFilter}>
-        <StatusFilter id={Status.NOTE_OFF} />
-        <StatusFilter id={Status.NOTE_ON} />
-        <StatusFilter id={Status.KEY_PRESSURE} />
-        <StatusFilter id={Status.CONTROL_CHANGE} />
-        <StatusFilter id={Status.PROGRAM_CHANGE} />
-        <StatusFilter id={Status.CHANNEL_PRESSURE} />
-        <StatusFilter id={Status.PITCH_BEND} />
-        <StatusFilter id={Status.SYSTEM_EXCLUSIVE} />
-        <StatusFilter id={Status.MIDI_TIME_CODE} />
-        <StatusFilter id={Status.SONG_POSITION} />
-        <StatusFilter id={Status.SONG_SELECT} />
-        <StatusFilter id={Status.TUNE_REQUEST} />
-        <StatusFilter id={Status.TIMING_CLOCK} />
-        <StatusFilter id={Status.START} />
-        <StatusFilter id={Status.CONTINUE} />
-        <StatusFilter id={Status.STOP} />
-        <StatusFilter id={Status.ACTIVE_SENSING} />
-        <StatusFilter id={Status.RESET} />
-      </FilterList>
-      <h2>Events</h2>
-      <ul>
-        {messages.map((m, i) => (
-          <MidiMessage message={m} key={i} />
-        ))}
-      </ul>
-    </section>
+    <>
+      <section className="monitor">
+        <h1>Midi Monitor</h1>
+        <ul>
+          {messages.map((m, i) => (
+            <MidiMessage message={m} key={i} />
+          ))}
+        </ul>
+      </section>
+      <aside className="filters">
+        <h2>Filters</h2>
+        <h3>Inputs</h3>
+        <FilterList filter={midiFilter} changeFilter={setMidiFilter}>
+          {midiInputs.map(({ id, name, manufacturer }) => (
+            <Filter id={id}>
+              {manufacturer} {name}
+            </Filter>
+          ))}
+        </FilterList>
+        <h3>Messages</h3>
+        <FilterList filter={statusFilter} changeFilter={setStatusFilter}>
+          <StatusFilter id={Status.NOTE_OFF} />
+          <StatusFilter id={Status.NOTE_ON} />
+          <StatusFilter id={Status.KEY_PRESSURE} />
+          <StatusFilter id={Status.CONTROL_CHANGE} />
+          <StatusFilter id={Status.PROGRAM_CHANGE} />
+          <StatusFilter id={Status.CHANNEL_PRESSURE} />
+          <StatusFilter id={Status.PITCH_BEND} />
+          <StatusFilter id={Status.SYSTEM_EXCLUSIVE} />
+          <StatusFilter id={Status.MIDI_TIME_CODE} />
+          <StatusFilter id={Status.SONG_POSITION} />
+          <StatusFilter id={Status.SONG_SELECT} />
+          <StatusFilter id={Status.TUNE_REQUEST} />
+          <StatusFilter id={Status.TIMING_CLOCK} />
+          <StatusFilter id={Status.START} />
+          <StatusFilter id={Status.CONTINUE} />
+          <StatusFilter id={Status.STOP} />
+          <StatusFilter id={Status.ACTIVE_SENSING} />
+          <StatusFilter id={Status.RESET} />
+        </FilterList>
+      </aside>
+    </>
   );
 }
 
@@ -130,13 +133,16 @@ function StatusFilter(props) {
 function Filter({ value, onChange, children }) {
   return (
     <li>
-      <input
-        type="checkbox"
-        checked={value}
-        onChange={e => {
-          onChange(e.target.checked);
-        }}></input>
-      {children}
+      <label>
+        <input
+          className="toggle"
+          type="checkbox"
+          checked={value}
+          onChange={e => {
+            onChange(e.target.checked);
+          }}></input>
+        <span>{children}</span>
+      </label>
     </li>
   );
 }

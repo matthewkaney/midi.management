@@ -1,0 +1,91 @@
+:root {
+  --input-color: #ddd;
+  --active-input-color: turquoise;
+}
+
+* {
+  font-size: 14px;
+  font-family: sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+section#root {
+  display: flex;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 2em;
+}
+
+section.monitor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-right: 2em;
+}
+
+section.monitor ul {
+  flex: 1;
+  padding: 0;
+  margin: 0;
+  overflow-y: scroll;
+}
+
+aside.filters {
+  overflow-y: scroll;
+}
+
+aside.filters ul {
+  padding: 0;
+  margin: 0;
+}
+
+aside.filters li {
+  list-style: none;
+  margin-top: 1px;
+}
+
+aside.filters label {
+  display: flex;
+}
+
+input[type='checkbox'].toggle {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+input[type='checkbox'].toggle + * {
+  display: inline-block;
+  flex: 1;
+  background: var(--input-color);
+  padding: 0.5em 0.5em 0.5em 2em;
+  position: relative;
+  line-height: 1em;
+}
+
+input[type='checkbox']:checked.toggle + * {
+  background: var(--active-input-color);
+}
+
+input[type='checkbox'].toggle + *:before {
+  content: '✕';
+  font-weight: bold;
+  position: absolute;
+  top: 0.5em;
+  left: 0.5em;
+  color: rgba(0, 0, 0, 0.2);
+}
+
+input[type='checkbox']:checked.toggle + *:before {
+  content: '〇';
+  line-height: 1.1em;
+}
