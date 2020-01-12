@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { render } from 'react-dom';
 
 import { receiveMIDI, receiveMidiInputs } from '@musedlab/midi/web';
-import { parseMidiMessage } from '@musedlab/midi/message';
+import { onNoteOn, onNoteOff } from '@musedlab/midi/message';
 import * as Status from '@musedlab/midi/message/statuses';
 import { Names } from './messageNames';
 
@@ -57,7 +57,15 @@ function MidiMonitor() {
     });
   }, [setMidiInputs, setMidiFilter]);
 
+  // List of message objects
   let [messages, setMessages] = useState([]);
+
+  let pushMessage = useCallback(
+    message => {
+      setMessages(list => [message, ...list].slice(0, 300));
+    },
+    [setMessages]
+  );
 
   useEffect(() => {
     return receiveMIDI(rawMessage => {
@@ -76,11 +84,29 @@ function MidiMonitor() {
                 .toUpperCase();
         */
 
-        let message = (
-          <Message time={time} name={Names[type]} key={id()}></Message>
-        );
+        onNoteOn(({ channel, key, velocity }) => {
+          pushMessage(
+            <Message time={time} name="Note On">
+              <Info label="Channel">{channel}</Info>
+              <Info label="Key">{key}</Info>
+              <Info label="Velocity">
+                {velocity} ({Math.round((velocity / 127) * 100)}%)
+              </Info>
+            </Message>
+          );
+        })(rawMessage);
 
-        setMessages(m => [message, ...m].slice(0, 200));
+        onNoteOff(({ channel, key, velocity }) => {
+          pushMessage(
+            <Message time={time} name="Note Off">
+              <Info label="Channel">{channel}</Info>
+              <Info label="Key">{key}</Info>
+              <Info label="Velocity">
+                {velocity} ({Math.round((velocity / 127) * 100)}%)
+              </Info>
+            </Message>
+          );
+        })(rawMessage);
       }
     });
   }, [statusFilter, midiFilter, setMessages]);
@@ -92,7 +118,7 @@ function MidiMonitor() {
         <div className="monitor-scroll">{messages}</div>
       </section>
       <aside className="filters">
-        <h2>Filter Messages</h2>
+        <h2>Incoming Message Filters</h2>
         <h3>MIDI Input</h3>
         <FilterList filter={midiFilter} changeFilter={setMidiFilter}>
           {midiInputs.map(({ id, name, manufacturer }) => (
@@ -139,7 +165,7 @@ function Message({ time, name, children }) {
   );
 }
 
-function MessageInfo({ label, children }) {
+function Info({ label, children }) {
   return (
     <div>
       <h3>{label}:&nbsp;</h3>
