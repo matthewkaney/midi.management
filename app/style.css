@@ -1,15 +1,29 @@
 :root {
-  --input-color: #ddd;
-  --active-input-color: turquoise;
+  /* "Tape" theme from https://github.com/hundredrabbits/Themes */
+  --background: #dad7cd;
+  --f_high: #696861;
+  --f_med: #ffffff;
+  --f_low: #b3b2ac;
+  --f_inv: #43423e;
+  --b_high: #43423e;
+  --b_med: #c2c1bb;
+  --b_low: #e5e3dc;
+  --b_inv: #eb3f48;
+
+  --input-color: var(--b_low);
+  --active-input-color: var(--b_inv);
 }
 
 * {
-  font-size: 14px;
-  font-family: sans-serif;
+  color: var(--f_high);
+  font-size: 16px;
+  line-height: 1em;
+  font-family: 'Roboto Mono', monospace;
 }
 
 body {
   margin: 0;
+  background: var(--background);
 }
 
 html,
@@ -24,22 +38,86 @@ section#root {
   padding: 2em;
 }
 
-section.monitor {
+h1 {
+  font-weight: normal;
+  margin: 0;
+  line-height: 2em;
+}
+
+.monitor {
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-right: 2em;
+  margin-right: 1em;
 }
 
-section.monitor ul {
+.monitor .monitor-scroll {
   flex: 1;
   padding: 0;
   margin: 0;
   overflow-y: scroll;
 }
 
+.monitor article {
+  background: var(--b_low);
+}
+
+.monitor article header,
+.monitor article div {
+  padding: 0.5em;
+  height: 1em;
+}
+
+.monitor article header:last-child,
+.monitor article div:last-child {
+  height: calc(1em - 2px);
+  margin-bottom: 2px;
+}
+
+.monitor article header {
+  background: var(--b_med);
+}
+
+.monitor article div {
+  padding-left: 1em;
+}
+
+.monitor article time {
+  color: var(--f_med);
+  text-transform: lowercase;
+  line-height: 1em;
+}
+
+.monitor article time::after {
+  content: ' ';
+}
+
+.monitor article h2 {
+  font-weight: normal;
+  margin: 0;
+  display: inline-block;
+}
+
+.monitor article h3 {
+  font-weight: normal;
+  margin: 0;
+  display: inline-block;
+  color: var(--f_med);
+}
+
 aside.filters {
   overflow-y: scroll;
+}
+
+aside.filters h2,
+aside.filters h3 {
+  font-weight: normal;
+  line-height: 2em;
+  margin: 0;
+}
+
+aside.filters h3 {
+  color: var(--f_med);
 }
 
 aside.filters ul {
@@ -49,7 +127,7 @@ aside.filters ul {
 
 aside.filters li {
   list-style: none;
-  margin-top: 1px;
+  margin-bottom: 2px;
 }
 
 aside.filters label {
@@ -67,13 +145,15 @@ input[type='checkbox'].toggle + * {
   display: inline-block;
   flex: 1;
   background: var(--input-color);
+  color: var(--f_low);
   padding: 0.5em 0.5em 0.5em 2em;
   position: relative;
-  line-height: 1em;
+  line-height: calc(1em - 2px);
 }
 
 input[type='checkbox']:checked.toggle + * {
   background: var(--active-input-color);
+  color: var(--f_inv);
 }
 
 input[type='checkbox'].toggle + *:before {
@@ -82,10 +162,9 @@ input[type='checkbox'].toggle + *:before {
   position: absolute;
   top: 0.5em;
   left: 0.5em;
-  color: rgba(0, 0, 0, 0.2);
 }
 
 input[type='checkbox']:checked.toggle + *:before {
   content: '〇';
-  line-height: 1.1em;
+  top: 0.55em;
 }

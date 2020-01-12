@@ -6,14 +6,34 @@ import { parseMidiMessage } from '@musedlab/midi/message';
 import * as Status from '@musedlab/midi/message/statuses';
 import { Names } from './messageNames';
 
-let defaultStatusFilter = {};
-for (let status of Object.values(Status)) {
-  defaultStatusFilter[status] = true;
+let messageId = 0;
+
+function id() {
+  let currentId = messageId;
+  messageId++;
+  return currentId;
+}
+
+let defaultStatusFilter;
+
+let savedStatusFilter = localStorage.getItem('type-filter');
+if (savedStatusFilter) {
+  defaultStatusFilter = JSON.parse(savedStatusFilter);
+} else {
+  defaultStatusFilter = {};
+
+  for (let status of Object.values(Status)) {
+    defaultStatusFilter[status] = true;
+  }
 }
 
 function MidiMonitor() {
   // Filters for different message types
   let [statusFilter, setStatusFilter] = useState(defaultStatusFilter);
+
+  useEffect(() => {
+    localStorage.setItem('type-filter', JSON.stringify(statusFilter));
+  }, [statusFilter]);
 
   // List of connected Midi Inputs and related filters
   let [midiInputs, setMidiInputs] = useState([]);
@@ -40,10 +60,26 @@ function MidiMonitor() {
   let [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    return receiveMIDI(message => {
-      message = parseMidiMessage(message);
+    return receiveMIDI(rawMessage => {
+      let status = rawMessage.data[0];
+      let type = status < Status.SYSTEM_EXCLUSIVE ? status & 0xf0 : status;
 
-      if (statusFilter[message.status] && midiFilter[message.input.id]) {
+      if (statusFilter[type] && midiFilter[rawMessage.input.id]) {
+        let time = new Date(
+          performance.timeOrigin + rawMessage.time
+        ).toLocaleTimeString();
+
+        /*
+        let data = [...rawMessage.data]
+                .map(n => n.toString(16).padStart(2, '0'))
+                .join(', ')
+                .toUpperCase();
+        */
+
+        let message = (
+          <Message time={time} name={Names[type]} key={id()}></Message>
+        );
+
         setMessages(m => [message, ...m].slice(0, 200));
       }
     });
@@ -53,15 +89,11 @@ function MidiMonitor() {
     <>
       <section className="monitor">
         <h1>Midi Monitor</h1>
-        <ul>
-          {messages.map((m, i) => (
-            <MidiMessage message={m} key={i} />
-          ))}
-        </ul>
+        <div className="monitor-scroll">{messages}</div>
       </section>
       <aside className="filters">
-        <h2>Filters</h2>
-        <h3>Inputs</h3>
+        <h2>Filter Messages</h2>
+        <h3>MIDI Input</h3>
         <FilterList filter={midiFilter} changeFilter={setMidiFilter}>
           {midiInputs.map(({ id, name, manufacturer }) => (
             <Filter id={id}>
@@ -69,7 +101,7 @@ function MidiMonitor() {
             </Filter>
           ))}
         </FilterList>
-        <h3>Messages</h3>
+        <h3>Message Type</h3>
         <FilterList filter={statusFilter} changeFilter={setStatusFilter}>
           <StatusFilter id={Status.NOTE_OFF} />
           <StatusFilter id={Status.NOTE_ON} />
@@ -95,18 +127,24 @@ function MidiMonitor() {
   );
 }
 
-function MidiMessage({ message }) {
+function Message({ time, name, children }) {
   return (
-    <li>
-      <b>
-        {new Date(performance.timeOrigin + message.time).toLocaleTimeString()}
-      </b>
-      {Names[message.status]}
-      <br />
-      {message.input.manufacturer} {message.input.name}
-      <br />
-      {message.value}
-    </li>
+    <article>
+      <header>
+        <time>{time}</time>
+        <h2>{name}</h2>
+      </header>
+      {children}
+    </article>
+  );
+}
+
+function MessageInfo({ label, children }) {
+  return (
+    <div>
+      <h3>{label}:&nbsp;</h3>
+      {children}
+    </div>
   );
 }
 
