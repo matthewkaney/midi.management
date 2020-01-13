@@ -60,26 +60,30 @@ h1 {
 
 .monitor article {
   background: var(--b_low);
+  overflow: hidden;
+  margin-bottom: 2px;
 }
 
-.monitor article header,
-.monitor article div {
+.monitor article header {
   padding: 0.5em;
   height: 1em;
-}
-
-.monitor article header:last-child,
-.monitor article div:last-child {
-  height: calc(1em - 2px);
-  margin-bottom: 2px;
 }
 
 .monitor article header {
   background: var(--b_med);
 }
 
-.monitor article div {
-  padding-left: 1em;
+.monitor article .message-info {
+  padding: 0 1em;
+  margin-bottom: -2px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.monitor article .message-info div {
+  flex-grow: 1;
+  padding: 0.5em 0;
+  height: 1em;
 }
 
 .monitor article time {

@@ -163,7 +163,7 @@ function Message({ time, name, children }) {
         <time>{time}</time>
         <h2>{name}</h2>
       </header>
-      {children}
+      <div className="message-info">{children}</div>
     </article>
   );
 }
