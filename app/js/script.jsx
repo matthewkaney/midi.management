@@ -84,12 +84,16 @@ function MidiMonitor() {
             performance.timeOrigin + rawMessage.time
           ).toLocaleTimeString();
 
-          /*
-        let data = [...rawMessage.data]
-                .map(n => n.toString(16).padStart(2, '0'))
-                .join(', ')
-                .toUpperCase();
-        */
+          let data = [...rawMessage.data]
+            .map(n => n.toString(16).padStart(2, '0'))
+            .join(', ')
+            .toUpperCase();
+
+          let message = (
+            <Message key={id()} time={time} name="UNRECOGNIZED MESSAGE">
+              <Info label="Data">{data}</Info>
+            </Message>
+          );
 
           onNoteOn(({ channel, key, velocity }) => {
             pushMessage(
@@ -134,6 +138,8 @@ function MidiMonitor() {
               </Message>
             );
           })(rawMessage);
+
+          pushMessage(message);
         }
       }),
     [statusFilter, midiFilter, setMessages]
