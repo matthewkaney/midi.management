@@ -6,9 +6,11 @@ import {
   onNoteOn,
   onNoteOff,
   onKeyPressure,
-  onControlChange
+  onControlChange,
+  onPitchBend,
+  onChannelPressure
 } from '@musedlab/midi/message';
-import * as Status from '@musedlab/midi/message/statuses';
+import { MessageTypes } from './data/messageTypes';
 
 import { Filters } from './filters';
 
@@ -28,7 +30,7 @@ if (savedStatusFilter) {
 } else {
   defaultStatusFilter = {};
 
-  for (let status of Object.values(Status)) {
+  for (let status in MessageTypes) {
     defaultStatusFilter[status] = true;
   }
 }
@@ -96,7 +98,7 @@ function MidiMonitor() {
           );
 
           onNoteOn(({ channel, key, velocity }) => {
-            pushMessage(
+            message = (
               <Message key={id()} time={time} name="Note On">
                 <Info label="Channel">{channel}</Info>
                 <Info label="Key">{key}</Info>
@@ -108,7 +110,7 @@ function MidiMonitor() {
           })(rawMessage);
 
           onNoteOff(({ channel, key, velocity }) => {
-            pushMessage(
+            message = (
               <Message key={id()} time={time} name="Note Off">
                 <Info label="Channel">{channel}</Info>
                 <Info label="Key">{key}</Info>
@@ -120,7 +122,7 @@ function MidiMonitor() {
           })(rawMessage);
 
           onKeyPressure(({ channel, key, value }) => {
-            pushMessage(
+            message = (
               <Message key={id()} time={time} name="Key Pressure">
                 <Info label="Channel">{channel}</Info>
                 <Info label="Key">{key}</Info>
@@ -130,10 +132,28 @@ function MidiMonitor() {
           })(rawMessage);
 
           onControlChange(({ channel, controller, value }) => {
-            pushMessage(
+            message = (
               <Message key={id()} time={time} name="Control Change">
                 <Info label="Channel">{channel}</Info>
                 <Info label="Controller">{controller}</Info>
+                <Info label="Value">{value}</Info>
+              </Message>
+            );
+          })(rawMessage);
+
+          onPitchBend(({ channel, value }) => {
+            message = (
+              <Message key={id()} time={time} name="Pitch Bend">
+                <Info label="Channel">{channel}</Info>
+                <Info label="Value">{value}</Info>
+              </Message>
+            );
+          })(rawMessage);
+
+          onChannelPressure(({ channel, value }) => {
+            message = (
+              <Message key={id()} time={time} name="Channel Pressure">
+                <Info label="Channel">{channel}</Info>
                 <Info label="Value">{value}</Info>
               </Message>
             );
