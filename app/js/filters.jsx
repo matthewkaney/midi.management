@@ -17,7 +17,7 @@ function Filters({
       <h3>MIDI Input</h3>
       <FilterList filter={midiFilter} changeFilter={setMidiFilter}>
         {midiInputs.map(({ id, name, manufacturer }) => (
-          <Filter id={id}>
+          <Filter key={id} id={id}>
             {manufacturer} {name}
           </Filter>
         ))}

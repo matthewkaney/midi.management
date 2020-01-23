@@ -1,5 +1,8 @@
 export function getMidiManufacturerName(id) {
-  let idString = id.map(n => `${n.toString(16).padStart(2, '0')}H`).join(' ');
+  let idString = [...id]
+    .map(n => `${n.toString(16).padStart(2, '0')}H`)
+    .join(' ')
+    .toUpperCase();
   return names[idString];
 }
 

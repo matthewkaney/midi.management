@@ -8,9 +8,16 @@ import {
   onKeyPressure,
   onControlChange,
   onPitchBend,
-  onChannelPressure
+  onChannelPressure,
+  onSystemExclusive,
+  onSongPosition,
+  onTimingClock,
+  onTimingStart,
+  onTimingContinue,
+  onTimingStop
 } from '@musedlab/midi/message';
 import { MessageTypes } from './data/messageTypes';
+import { getMidiManufacturerName } from './data/sysexVendorNames';
 
 import { Filters } from './filters';
 
@@ -86,14 +93,11 @@ function MidiMonitor() {
             performance.timeOrigin + rawMessage.time
           ).toLocaleTimeString();
 
-          let data = [...rawMessage.data]
-            .map(n => n.toString(16).padStart(2, '0'))
-            .join(', ')
-            .toUpperCase();
-
           let message = (
             <Message key={id()} time={time} name="UNRECOGNIZED MESSAGE">
-              <Info label="Data">{data}</Info>
+              <Info label="Data">
+                <Hex data={rawMessage.data} />
+              </Info>
             </Message>
           );
 
@@ -159,6 +163,44 @@ function MidiMonitor() {
             );
           })(rawMessage);
 
+          onSystemExclusive(({ manufacturer, data }) => {
+            message = (
+              <Message key={id()} time={time} name="System Exclusive">
+                <Info label="Manufacturer">
+                  <Hex data={manufacturer} /> (
+                  {getMidiManufacturerName(manufacturer)})
+                </Info>
+                <Info label="Data">
+                  <Hex data={data} />
+                </Info>
+              </Message>
+            );
+          })(rawMessage);
+
+          onSongPosition(({ position }) => {
+            message = (
+              <Message key={id()} time={time} name="Song Position">
+                <Info label="Position">{position}</Info>
+              </Message>
+            );
+          })(rawMessage);
+
+          onTimingClock(() => {
+            message = <Message key={id()} time={time} name="Clock Tick" />;
+          })(rawMessage);
+
+          onTimingStart(() => {
+            message = <Message key={id()} time={time} name="Clock Start" />;
+          })(rawMessage);
+
+          onTimingStop(() => {
+            message = <Message key={id()} time={time} name="Clock Stop" />;
+          })(rawMessage);
+
+          onTimingContinue(() => {
+            message = <Message key={id()} time={time} name="Clock Continue" />;
+          })(rawMessage);
+
           pushMessage(message);
         }
       }),
@@ -191,6 +233,17 @@ function Message({ time, name, children }) {
       </header>
       <div className="message-info">{children}</div>
     </article>
+  );
+}
+
+function Hex({ data }) {
+  return (
+    <>
+      {[...data]
+        .map(n => n.toString(16).padStart(2, '0'))
+        .join(' ')
+        .toUpperCase()}
+    </>
   );
 }
 
