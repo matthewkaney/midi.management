@@ -3,21 +3,31 @@ import { render } from 'react-dom';
 
 import { receiveMIDI, receiveMidiInputs } from '@musedlab/midi/web';
 import {
-  onNoteOn,
-  onNoteOff,
-  onKeyPressure,
-  onControlChange,
-  onPitchBend,
-  onChannelPressure,
-  onSystemExclusive,
-  onSongPosition,
-  onTimingClock,
-  onTimingStart,
-  onTimingContinue,
-  onTimingStop
-} from '@musedlab/midi/message';
-import { MessageTypes } from './data/messageTypes';
-import { getMidiManufacturerName } from './data/sysexVendorNames';
+  getChannel,
+  isNoteOn,
+  isNoteOff,
+  isKeyPressure,
+  isControlChange,
+  isProgramChange,
+  isPitchBend,
+  isChannelPressure,
+  isSystemExclusive,
+  getSysExVendor,
+  getSysExData,
+  isTimecode,
+  isSongPosition,
+  isSongSelect,
+  isTuneRequest,
+  isClock,
+  isStartClock,
+  isContinueClock,
+  isStopClock,
+  isActiveSensing,
+  isReset
+} from '@musedlab/midi/messages';
+import { MessageTypes } from './names/messageTypes';
+import { getMidiNoteName } from './names/pitches';
+import { getMidiManufacturerName } from './names/sysexVendorNames';
 
 import { Filters } from './filters';
 
@@ -84,124 +94,123 @@ function MidiMonitor() {
 
   useEffect(
     () =>
-      receiveMIDI(rawMessage => {
-        let status = rawMessage.data[0];
+      receiveMIDI(m => {
+        let [status] = m.data;
         let type = status < 0xf0 ? status & 0xf0 : status;
 
-        if (statusFilter[type] && midiFilter[rawMessage.input.id]) {
+        if (statusFilter[type] && midiFilter[m.input.id]) {
           let time = new Date(
-            performance.timeOrigin + rawMessage.time
+            performance.timeOrigin + m.time
           ).toLocaleTimeString();
 
-          let message = (
-            <Message key={id()} time={time} name="UNRECOGNIZED MESSAGE">
-              <Info label="Data">
-                <Hex data={rawMessage.data} />
-              </Info>
-            </Message>
-          );
+          let key, velocity, pressure;
 
-          onNoteOn(({ channel, key, velocity }) => {
-            message = (
+          if (isNoteOn(m)) {
+            [, key, velocity] = m.data;
+            pushMessage(
               <Message key={id()} time={time} name="Note On">
-                <Info label="Channel">{channel}</Info>
-                <Info label="Key">{key}</Info>
+                <Info label="Channel">{getChannel(m) + 1}</Info>
+                <Info label="Key">
+                  {key} ({getMidiNoteName(key)})
+                </Info>
                 <Info label="Velocity">
                   {velocity} ({Math.round((velocity / 127) * 100)}%)
                 </Info>
               </Message>
             );
-          })(rawMessage);
-
-          onNoteOff(({ channel, key, velocity }) => {
-            message = (
+          } else if (isNoteOff(m)) {
+            [, key, velocity] = m.data;
+            pushMessage(
               <Message key={id()} time={time} name="Note Off">
-                <Info label="Channel">{channel}</Info>
-                <Info label="Key">{key}</Info>
+                <Info label="Channel">{getChannel(m) + 1}</Info>
+                <Info label="Key">
+                  {key} ({getMidiNoteName(key)})
+                </Info>
                 <Info label="Velocity">
                   {velocity} ({Math.round((velocity / 127) * 100)}%)
                 </Info>
               </Message>
             );
-          })(rawMessage);
-
-          onKeyPressure(({ channel, key, value }) => {
-            message = (
+          } else if (isKeyPressure(m)) {
+            [, key, pressure] = m.data;
+            pushMessage(
               <Message key={id()} time={time} name="Key Pressure">
-                <Info label="Channel">{channel}</Info>
-                <Info label="Key">{key}</Info>
-                <Info label="Pressure">{value}</Info>
+                <Info label="Channel">{getChannel(m) + 1}</Info>
+                <Info label="Key">
+                  {key} ({getMidiNoteName(key)})
+                </Info>
+                <Info label="Pressure">{pressure}</Info>
               </Message>
             );
-          })(rawMessage);
-
-          onControlChange(({ channel, controller, value }) => {
-            message = (
+          } else if (isChannelPressure(m)) {
+            let [, pressure] = m.data;
+            pushMessage(
+              <Message key={id()} time={time} name="Channel Pressure">
+                <Info label="Channel">{getChannel(m) + 1}</Info>
+                <Info label="Pressure">{pressure}</Info>
+              </Message>
+            );
+          } else if (isPitchBend(m)) {
+            let [, lsb, msb] = m.data;
+            pushMessage(
+              <Message key={id()} time={time} name="Pitch Bend">
+                <Info label="Channel">{getChannel(m) + 1}</Info>
+                <Info label="Pitch Bend">{msb}</Info>
+              </Message>
+            );
+          } else if (isControlChange(m)) {
+            let [, controller, value] = m.data;
+            pushMessage(
               <Message key={id()} time={time} name="Control Change">
-                <Info label="Channel">{channel}</Info>
+                <Info label="Channel">{getChannel(m) + 1}</Info>
                 <Info label="Controller">{controller}</Info>
                 <Info label="Value">{value}</Info>
               </Message>
             );
-          })(rawMessage);
-
-          onPitchBend(({ channel, value }) => {
-            message = (
-              <Message key={id()} time={time} name="Pitch Bend">
-                <Info label="Channel">{channel}</Info>
-                <Info label="Value">{value}</Info>
-              </Message>
-            );
-          })(rawMessage);
-
-          onChannelPressure(({ channel, value }) => {
-            message = (
-              <Message key={id()} time={time} name="Channel Pressure">
-                <Info label="Channel">{channel}</Info>
-                <Info label="Value">{value}</Info>
-              </Message>
-            );
-          })(rawMessage);
-
-          onSystemExclusive(({ manufacturer, data }) => {
-            message = (
+          } else if (isProgramChange(m)) {
+          } else if (isSystemExclusive(m)) {
+            let manufacturer = getSysExVendor(m);
+            let sysExData = getSysExData(m);
+            pushMessage(
               <Message key={id()} time={time} name="System Exclusive">
                 <Info label="Manufacturer">
                   <Hex data={manufacturer} /> (
                   {getMidiManufacturerName(manufacturer)})
                 </Info>
                 <Info label="Data">
-                  <Hex data={data} />
+                  <Hex data={sysExData} />
                 </Info>
               </Message>
             );
-          })(rawMessage);
-
-          onSongPosition(({ position }) => {
-            message = (
-              <Message key={id()} time={time} name="Song Position">
-                <Info label="Position">{position}</Info>
+          } else if (isTimecode(m)) {
+          } else if (isSongPosition(m)) {
+          } else if (isSongSelect(m)) {
+          } else if (isTuneRequest(m)) {
+          } else if (isClock(m)) {
+            pushMessage(<Message key={id()} time={time} name="Clock Tick" />);
+          } else if (isStartClock(m)) {
+            pushMessage(<Message key={id()} time={time} name="Clock Start" />);
+          } else if (isContinueClock(m)) {
+            pushMessage(
+              <Message key={id()} time={time} name="Clock Continue" />
+            );
+          } else if (isStopClock(m)) {
+            pushMessage(<Message key={id()} time={time} name="Clock Stop" />);
+          } else if (isActiveSensing(m)) {
+            pushMessage(
+              <Message key={id()} time={time} name="Active Sensing" />
+            );
+          } else if (isReset(m)) {
+            pushMessage(<Message key={id()} time={time} name="Reset" />);
+          } else {
+            pushMessage(
+              <Message key={id()} time={time} name="UNRECOGNIZED MESSAGE">
+                <Info label="Data">
+                  <Hex data={m.data} />
+                </Info>
               </Message>
             );
-          })(rawMessage);
-
-          onTimingClock(() => {
-            message = <Message key={id()} time={time} name="Clock Tick" />;
-          })(rawMessage);
-
-          onTimingStart(() => {
-            message = <Message key={id()} time={time} name="Clock Start" />;
-          })(rawMessage);
-
-          onTimingStop(() => {
-            message = <Message key={id()} time={time} name="Clock Stop" />;
-          })(rawMessage);
-
-          onTimingContinue(() => {
-            message = <Message key={id()} time={time} name="Clock Continue" />;
-          })(rawMessage);
-
-          pushMessage(message);
+          }
         }
       }),
     [statusFilter, midiFilter, setMessages]
@@ -224,7 +233,7 @@ function MidiMonitor() {
   );
 }
 
-function Message({ time, name, children }) {
+function Message({ time, name, children = undefined }) {
   return (
     <article>
       <header>

@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { MessageTypes } from './data/messageTypes';
+import { MessageTypes } from './names/messageTypes';
 
 const memoizedFilters = memo(Filters);
 export { memoizedFilters as Filters };
