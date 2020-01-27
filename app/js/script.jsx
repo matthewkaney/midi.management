@@ -52,7 +52,7 @@ if (savedStatusFilter) {
   }
 }
 
-function MidiMonitor() {
+export function MidiMonitor(props) {
   // Filters for different message types
   let [statusFilter, setStatusFilter] = useState(defaultStatusFilter);
 
