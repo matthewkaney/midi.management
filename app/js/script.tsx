@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { render } from 'react-dom';
 
 import { receiveMIDI, receiveMidiInputs } from '@musedlab/midi/web';
+import { fromDataBytes } from '@musedlab/midi/data';
 import {
   getChannel,
   isNoteOn,
@@ -139,7 +140,9 @@ export function MidiMonitor(props) {
                 <Info label="Key">
                   {key} ({getMidiNoteName(key)})
                 </Info>
-                <Info label="Pressure">{pressure}</Info>
+                <Info label="Pressure">
+                  {pressure} ({Math.round((pressure / 127) * 100)}%)
+                </Info>
               </Message>
             );
           } else if (isChannelPressure(m)) {
@@ -147,15 +150,22 @@ export function MidiMonitor(props) {
             pushMessage(
               <Message key={id()} time={time} name="Channel Pressure">
                 <Info label="Channel">{getChannel(m) + 1}</Info>
-                <Info label="Pressure">{pressure}</Info>
+                <Info label="Pressure">
+                  {pressure} ({Math.round((pressure / 127) * 100)}%)
+                </Info>
               </Message>
             );
           } else if (isPitchBend(m)) {
             let [, lsb, msb] = m.data;
+            let bend = fromDataBytes([msb, lsb]);
+            let bendPercent = Math.round((bend / 8192 - 1) * 100);
             pushMessage(
               <Message key={id()} time={time} name="Pitch Bend">
                 <Info label="Channel">{getChannel(m) + 1}</Info>
-                <Info label="Pitch Bend">{msb}</Info>
+                <Info label="Pitch Bend">
+                  {bend} ({Math.sign(bendPercent) === 1 ? '+' : ''}
+                  {bendPercent}%)
+                </Info>
               </Message>
             );
           } else if (isControlChange(m)) {
@@ -168,6 +178,13 @@ export function MidiMonitor(props) {
               </Message>
             );
           } else if (isProgramChange(m)) {
+            let [, program] = m.data;
+            pushMessage(
+              <Message key={id()} time={time} name="Program Change">
+                <Info label="Channel">{getChannel(m) + 1}</Info>
+                <Info label="Program">{program}</Info>
+              </Message>
+            );
           } else if (isSystemExclusive(m)) {
             let manufacturer = getSysExVendor(m);
             let sysExData = getSysExData(m);
