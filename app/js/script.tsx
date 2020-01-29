@@ -103,7 +103,7 @@ export function MidiMonitor(props) {
             performance.timeOrigin + m.time
           ).toLocaleTimeString();
 
-          let key, velocity, pressure;
+          let key: number, velocity: number, pressure: number;
 
           if (isNoteOn(m)) {
             [, key, velocity] = m.data;
