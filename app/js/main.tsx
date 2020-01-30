@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Router } from '@reach/router';
 
-import { MidiMonitor } from './script';
+import { MidiMonitor } from './monitor';
 import { MidiViewer } from './viewer';
 
 function MidiManagement() {

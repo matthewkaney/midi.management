@@ -34,7 +34,7 @@ import { Filters } from './filters';
 
 let messageId = 0;
 
-function id() {
+export function id() {
   let currentId = messageId;
   messageId++;
   return currentId;
@@ -250,7 +250,7 @@ export function MidiMonitor(props) {
   );
 }
 
-function Message({ time, name, children = undefined }) {
+export function Message({ time, name, children = undefined }) {
   return (
     <article>
       <header>
@@ -262,7 +262,7 @@ function Message({ time, name, children = undefined }) {
   );
 }
 
-function Hex({ data }) {
+export function Hex({ data }) {
   return (
     <>
       {[...data]
@@ -273,7 +273,7 @@ function Hex({ data }) {
   );
 }
 
-function Info({ label, children }) {
+export function Info({ label, children }) {
   return (
     <div>
       <h3>{label}:&nbsp;</h3>
