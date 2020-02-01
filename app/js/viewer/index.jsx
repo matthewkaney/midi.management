@@ -27,6 +27,7 @@ import {
   isReset
 } from '@musedlab/midi/messages';
 
+import { FileMessage } from '../messages/FileMessage';
 import { id, Message, Info, Hex } from '../monitor';
 
 import { getMidiNoteName } from '../names/pitches';
@@ -45,7 +46,7 @@ export function MidiViewer(props) {
         if (!cancelled) {
           let midi = decodeMidiFile(new Uint8Array(buffer));
 
-          setMessages(midi.tracks.flat().map(renderMessage));
+          setMessages(midi.tracks.flat());
         }
       });
 
@@ -94,7 +95,9 @@ export function MidiViewer(props) {
       className="viewer"
       style={{ height: '100%', width: '100%' }}
       ref={listenForDrop}>
-      {messages}
+      {messages.map(m => (
+        <FileMessage message={m} key={id()} />
+      ))}
     </section>
   );
 }
