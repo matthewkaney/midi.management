@@ -102,6 +102,7 @@ export function MidiViewer(props) {
   );
 }
 
+/*
 function renderMessage(m) {
   let { time } = m;
   let key, velocity, pressure;
@@ -223,4 +224,4 @@ function renderMessage(m) {
       </Message>
     );
   }
-}
+}*/

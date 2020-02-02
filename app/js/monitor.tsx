@@ -32,6 +32,8 @@ import { getMidiManufacturerName } from './names/sysexVendorNames';
 
 import { Filters } from './filters';
 
+import { Message, Info, Hex } from './messages/Message';
+
 let messageId = 0;
 
 export function id() {

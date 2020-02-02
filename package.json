@@ -2,8 +2,10 @@
   "name": "midi-management",
   "version": "0.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "parcel app/index.html"
+    "clean": "rm -rf .cache public",
+    "dev": "parcel app/index.html --out-dir public",
+    "build": "parcel build app/index.html --out-dir public --experimental-scope-hoisting",
+    "deploy": "npm run clean && npm run build && firebase deploy"
   },
   "license": "UNLICENSED",
   "private": true,
@@ -19,6 +21,7 @@
     "@types/reach__router": "^1.2.6",
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
+    "firebase-tools": "^7.12.1",
     "parcel": "^1.12.4",
     "typescript": "^3.7.5"
   }
