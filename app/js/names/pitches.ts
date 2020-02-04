@@ -13,6 +13,6 @@ const pitchClasses = [
   'B'
 ];
 
-export function getMidiNoteName(note) {
+export function getMidiNoteName(note: number) {
   return pitchClasses[note % 12];
 }

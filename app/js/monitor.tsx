@@ -2,37 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { render } from 'react-dom';
 
 import { receiveMIDI, receiveMidiInputs } from '@musedlab/midi/web';
-import { fromDataBytes } from '@musedlab/midi/data';
-import {
-  getChannel,
-  isNoteOn,
-  isNoteOff,
-  isKeyPressure,
-  isControlChange,
-  isProgramChange,
-  isPitchBend,
-  isChannelPressure,
-  isSystemExclusive,
-  getSysExVendor,
-  getSysExData,
-  isTimecode,
-  isSongPosition,
-  isSongSelect,
-  isTuneRequest,
-  isClock,
-  isStartClock,
-  isContinueClock,
-  isStopClock,
-  isActiveSensing,
-  isReset
-} from '@musedlab/midi/messages';
 import { MessageTypes } from './names/messageTypes';
-import { getMidiNoteName } from './names/pitches';
-import { getMidiManufacturerName } from './names/sysexVendorNames';
+
+import { LiveMessage } from './messages/LiveMessage';
 
 import { Filters } from './filters';
-
-import { Message, Info, Hex } from './messages/Message';
 
 let messageId = 0;
 
@@ -102,134 +76,11 @@ export function MidiMonitor(props) {
         let type = status < 0xf0 ? status & 0xf0 : status;
 
         if (statusFilter[type] && midiFilter[m.input.id]) {
-          let time = new Date(
+          let timeLabel = new Date(
             performance.timeOrigin + m.time
           ).toLocaleTimeString();
 
-          let key: number, velocity: number, pressure: number;
-
-          if (isNoteOn(m)) {
-            [, key, velocity] = m.data;
-            pushMessage(
-              <Message key={id()} time={time} name="Note On">
-                <Info label="Channel">{getChannel(m) + 1}</Info>
-                <Info label="Key">
-                  {key} ({getMidiNoteName(key)})
-                </Info>
-                <Info label="Velocity">
-                  {velocity} ({Math.round((velocity / 127) * 100)}%)
-                </Info>
-              </Message>
-            );
-          } else if (isNoteOff(m)) {
-            [, key, velocity] = m.data;
-            pushMessage(
-              <Message key={id()} time={time} name="Note Off">
-                <Info label="Channel">{getChannel(m) + 1}</Info>
-                <Info label="Key">
-                  {key} ({getMidiNoteName(key)})
-                </Info>
-                <Info label="Velocity">
-                  {velocity} ({Math.round((velocity / 127) * 100)}%)
-                </Info>
-              </Message>
-            );
-          } else if (isKeyPressure(m)) {
-            [, key, pressure] = m.data;
-            pushMessage(
-              <Message key={id()} time={time} name="Key Pressure">
-                <Info label="Channel">{getChannel(m) + 1}</Info>
-                <Info label="Key">
-                  {key} ({getMidiNoteName(key)})
-                </Info>
-                <Info label="Pressure">
-                  {pressure} ({Math.round((pressure / 127) * 100)}%)
-                </Info>
-              </Message>
-            );
-          } else if (isChannelPressure(m)) {
-            let [, pressure] = m.data;
-            pushMessage(
-              <Message key={id()} time={time} name="Channel Pressure">
-                <Info label="Channel">{getChannel(m) + 1}</Info>
-                <Info label="Pressure">
-                  {pressure} ({Math.round((pressure / 127) * 100)}%)
-                </Info>
-              </Message>
-            );
-          } else if (isPitchBend(m)) {
-            let [, lsb, msb] = m.data;
-            let bend = fromDataBytes([msb, lsb]);
-            let bendPercent = Math.round((bend / 8192 - 1) * 100);
-            pushMessage(
-              <Message key={id()} time={time} name="Pitch Bend">
-                <Info label="Channel">{getChannel(m) + 1}</Info>
-                <Info label="Pitch Bend">
-                  {bend} ({Math.sign(bendPercent) === 1 ? '+' : ''}
-                  {bendPercent}%)
-                </Info>
-              </Message>
-            );
-          } else if (isControlChange(m)) {
-            let [, controller, value] = m.data;
-            pushMessage(
-              <Message key={id()} time={time} name="Control Change">
-                <Info label="Channel">{getChannel(m) + 1}</Info>
-                <Info label="Controller">{controller}</Info>
-                <Info label="Value">{value}</Info>
-              </Message>
-            );
-          } else if (isProgramChange(m)) {
-            let [, program] = m.data;
-            pushMessage(
-              <Message key={id()} time={time} name="Program Change">
-                <Info label="Channel">{getChannel(m) + 1}</Info>
-                <Info label="Program">{program}</Info>
-              </Message>
-            );
-          } else if (isSystemExclusive(m)) {
-            let manufacturer = getSysExVendor(m);
-            let sysExData = getSysExData(m);
-            pushMessage(
-              <Message key={id()} time={time} name="System Exclusive">
-                <Info label="Manufacturer">
-                  <Hex data={manufacturer} /> (
-                  {getMidiManufacturerName(manufacturer)})
-                </Info>
-                <Info label="Data">
-                  <Hex data={sysExData} />
-                </Info>
-              </Message>
-            );
-          } else if (isTimecode(m)) {
-          } else if (isSongPosition(m)) {
-          } else if (isSongSelect(m)) {
-          } else if (isTuneRequest(m)) {
-          } else if (isClock(m)) {
-            pushMessage(<Message key={id()} time={time} name="Clock Tick" />);
-          } else if (isStartClock(m)) {
-            pushMessage(<Message key={id()} time={time} name="Clock Start" />);
-          } else if (isContinueClock(m)) {
-            pushMessage(
-              <Message key={id()} time={time} name="Clock Continue" />
-            );
-          } else if (isStopClock(m)) {
-            pushMessage(<Message key={id()} time={time} name="Clock Stop" />);
-          } else if (isActiveSensing(m)) {
-            pushMessage(
-              <Message key={id()} time={time} name="Active Sensing" />
-            );
-          } else if (isReset(m)) {
-            pushMessage(<Message key={id()} time={time} name="Reset" />);
-          } else {
-            pushMessage(
-              <Message key={id()} time={time} name="UNRECOGNIZED MESSAGE">
-                <Info label="Data">
-                  <Hex data={m.data} />
-                </Info>
-              </Message>
-            );
-          }
+          pushMessage({ ...m, timeLabel });
         }
       }),
     [statusFilter, midiFilter, setMessages]
@@ -239,7 +90,11 @@ export function MidiMonitor(props) {
     <>
       <section className="monitor">
         <h1>Midi Monitor</h1>
-        <div className="monitor-scroll">{messages}</div>
+        <div className="monitor-scroll">
+          {messages.map(m => (
+            <LiveMessage message={m} key={id()} />
+          ))}
+        </div>
       </section>
       <Filters
         midiFilter={midiFilter}

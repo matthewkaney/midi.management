@@ -4,11 +4,11 @@ export function UnknownMessage({ message }) {
   return <>UNRECOGNIZED!</>;
 }
 
-export function Message({ time, name, children = undefined }) {
+export function Message({ message, name, children }) {
   return (
-    <article>
+    <article className="midi-message">
       <header>
-        <time>{time}</time>
+        <time>{message.time}</time>
         <h2>{name}</h2>
       </header>
       <div className="message-info">{children}</div>
