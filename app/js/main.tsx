@@ -2,8 +2,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Router } from '@reach/router';
 
-import { MidiMonitor } from './monitor';
-import { MidiViewer } from './viewer';
+import { MidiMonitor } from './routes/monitor';
+import { MidiViewer } from './routes/viewer';
 
 function MidiManagement() {
   return (

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 import { decodeMidiFile } from '@musedlab/midi/file';
 
-import { FileMessage } from '../messages/FileMessage';
+import { FileMessage } from '../../messages/FileMessage';
 import { id } from '../monitor';
 
 export function MidiViewer(props) {

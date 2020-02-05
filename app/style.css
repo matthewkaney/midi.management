@@ -1,17 +1,45 @@
 :root {
-  /* "Tape" theme from https://github.com/hundredrabbits/Themes */
-  --background: #dad7cd;
-  --f_high: #696861;
-  --f_med: #ffffff;
-  --f_low: #b3b2ac;
-  --f_inv: #43423e;
-  --b_high: #43423e;
-  --b_med: #c2c1bb;
-  --b_low: #e5e3dc;
-  --b_inv: #eb3f48;
+  /* https://gka.github.io/palettes/#/12|d|f5f3f0,b1aba2|68635d,2c2824|1|1 */
+  --l-0: #f5f3f0;
+  --l-1: #e9e7e3;
+  --l-2: #dedbd5;
+  --l-3: #d3cfc8;
+  --l-4: #c7c3bc;
+  --l-5: #bcb7af;
+  --d-5: #5e5953;
+  --d-4: #534e49;
+  --d-3: #49443f;
+  --d-2: #3f3b36;
+  --d-1: #35312d;
+  --d-0: #2c2824;
 
-  --input-color: var(--b_low);
-  --active-input-color: var(--b_inv);
+  /* https://gka.github.io/palettes/#/16|d|ee381d,ffa253|ff9941,942cc6|1|1 */
+  --c-00: #ee381d;
+  --c-01: #f14a23;
+  --c-02: #f4592a;
+  --c-03: #f66731;
+  --c-04: #f87337;
+  --c-05: #fa803e;
+  --c-06: #fc8b45;
+  --c-07: #fe974c;
+  --c-08: #f68c57;
+  --c-09: #eb7f69;
+  --c-10: #e0717a;
+  --c-11: #d5648a;
+  --c-12: #c75699;
+  --c-13: #b948a8;
+  --c-14: #a83ab7;
+  --c-15: #942cc6;
+
+  --background: var(--l-0);
+  --b_low: var(--l-1);
+  --b_med: var(--l-2);
+  --b_high: var(--l-3);
+  --f_high: var(--d-0);
+  --f_med: var(--d-5);
+  --f_low: var(--l-5);
+  --input-color: var(--l-1);
+  --active-input-color: var(--c-03);
 }
 
 * {
@@ -56,62 +84,58 @@ h1 {
   flex: 1;
   padding: 0;
   margin: 0;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
-.monitor article {
+article.midi-message {
   background: var(--b_low);
   overflow: hidden;
   margin-bottom: 2px;
 }
 
-.monitor article header {
+article.midi-message header {
+  height: 2em;
+  display: flex;
+  background: var(--b_low);
+}
+
+article.midi-message time {
   padding: 0.5em;
-  height: 1em;
-}
-
-.monitor article header {
   background: var(--b_med);
+  color: var(--f_med);
+  text-transform: lowercase;
+  line-height: 1em;
 }
 
-.monitor article .message-info {
+article.midi-message h2 {
+  margin: 0;
+  font-weight: normal;
+  padding: 0.5em;
+  flex-grow: 1;
+}
+
+article.midi-message h3 {
+  font-weight: normal;
+  margin: 0;
+  display: inline-block;
+  color: var(--f_med);
+}
+
+article.midi-message .message-info {
   padding: 0 1em;
   margin-bottom: -2px;
   display: flex;
   flex-wrap: wrap;
 }
 
-.monitor article .message-info div {
+article.midi-message .message-info div {
   flex-grow: 1;
   padding: 0.5em 0;
   height: 1em;
 }
 
-.monitor article time {
-  color: var(--f_med);
-  text-transform: lowercase;
-  line-height: 1em;
-}
-
-.monitor article time::after {
-  content: ' ';
-}
-
-.monitor article h2 {
-  font-weight: normal;
-  margin: 0;
-  display: inline-block;
-}
-
-.monitor article h3 {
-  font-weight: normal;
-  margin: 0;
-  display: inline-block;
-  color: var(--f_med);
-}
-
 aside.filters {
-  overflow-y: scroll;
+  overflow-y: filter;
 }
 
 aside.filters h2,

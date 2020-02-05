@@ -8,8 +8,9 @@ export function Message({ message, name, children }) {
   return (
     <article className="midi-message">
       <header>
-        <time>{message.time}</time>
+        <time>{message.timeLabel}</time>
         <h2>{name}</h2>
+        <div className="source">Arturia KeyLab</div>
       </header>
       <div className="message-info">{children}</div>
     </article>

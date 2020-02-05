@@ -2,11 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { render } from 'react-dom';
 
 import { receiveMIDI, receiveMidiInputs } from '@musedlab/midi/web';
-import { MessageTypes } from './names/messageTypes';
+import { MessageTypes } from '../../names/messageTypes';
 
-import { LiveMessage } from './messages/LiveMessage';
+import { MessageList } from '../../messages/MessageList';
+import { LiveMessage } from '../../messages/LiveMessage';
 
-import { Filters } from './filters';
+import { Filters } from '../../filters';
 
 let messageId = 0;
 
@@ -60,11 +61,15 @@ export function MidiMonitor(props) {
   }, [setMidiInputs, setMidiFilter]);
 
   // List of message objects
-  let [messages, setMessages] = useState([]);
+  let [messages, setMessages] = useState([[]]);
 
   let pushMessage = useCallback(
     message => {
-      setMessages(list => [message, ...list]);
+      setMessages(list =>
+        list[0].length < 100
+          ? [[message, ...list[0]], ...list.slice(1)]
+          : [[message], ...list]
+      );
     },
     [setMessages]
   );
@@ -72,15 +77,31 @@ export function MidiMonitor(props) {
   useEffect(
     () =>
       receiveMIDI(m => {
+        window.performance.mark('receive midi');
         let [status] = m.data;
         let type = status < 0xf0 ? status & 0xf0 : status;
 
         if (statusFilter[type] && midiFilter[m.input.id]) {
-          let timeLabel = new Date(
-            performance.timeOrigin + m.time
-          ).toLocaleTimeString();
+          // Format time label
+          let formatter = new Intl.DateTimeFormat(undefined, {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+          });
+          let date = new Date(performance.timeOrigin + m.time);
+          let timeLabel = formatter
+            .formatToParts(date)
+            .map(part =>
+              part.type === 'second'
+                ? `${part.value}.${date
+                    .getMilliseconds()
+                    .toString()
+                    .padStart(3, '0')}`
+                : part.value
+            )
+            .join('');
 
-          pushMessage({ ...m, timeLabel });
+          pushMessage({ ...m, timeLabel, id: id() });
         }
       }),
     [statusFilter, midiFilter, setMessages]
@@ -90,9 +111,19 @@ export function MidiMonitor(props) {
     <>
       <section className="monitor">
         <h1>Midi Monitor</h1>
+        <button
+          onClick={() => {
+            setMessages([[]]);
+          }}>
+          Clear
+        </button>
         <div className="monitor-scroll">
-          {messages.map(m => (
-            <LiveMessage message={m} key={id()} />
+          {messages.map((list, i) => (
+            <MessageList
+              type={LiveMessage}
+              messages={list}
+              key={messages.length - i}
+            />
           ))}
         </div>
       </section>
