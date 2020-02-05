@@ -13,23 +13,23 @@
   --d-1: #35312d;
   --d-0: #2c2824;
 
-  /* https://gka.github.io/palettes/#/16|d|ee381d,ffa253|ff9941,942cc6|1|1 */
-  --c-00: #ee381d;
-  --c-01: #f14a23;
-  --c-02: #f4592a;
-  --c-03: #f66731;
-  --c-04: #f87337;
-  --c-05: #fa803e;
-  --c-06: #fc8b45;
-  --c-07: #fe974c;
-  --c-08: #f68c57;
-  --c-09: #eb7f69;
-  --c-10: #e0717a;
-  --c-11: #d5648a;
-  --c-12: #c75699;
-  --c-13: #b948a8;
-  --c-14: #a83ab7;
-  --c-15: #942cc6;
+  /* https://gka.github.io/palettes/#/16|s|f79d19,ff0000,ae04c3||0|1 */
+  --c-00: #f79d19;
+  --c-01: #f99117;
+  --c-02: #fa851a;
+  --c-03: #fa791f;
+  --c-04: #f96d27;
+  --c-05: #f8612f;
+  --c-06: #f65538;
+  --c-07: #f34a42;
+  --c-08: #ef3e4d;
+  --c-09: #eb3259;
+  --c-10: #e52566;
+  --c-11: #de1875;
+  --c-12: #d60985;
+  --c-13: #cc0098;
+  --c-14: #bf00ac;
+  --c-15: #ae04c3;
 
   --background: var(--l-0);
   --b_low: var(--l-1);
@@ -39,7 +39,7 @@
   --f_med: var(--d-5);
   --f_low: var(--l-5);
   --input-color: var(--l-1);
-  --active-input-color: var(--c-03);
+  --active-input-color: var(--c-00);
 }
 
 * {
@@ -47,6 +47,19 @@
   font-size: 16px;
   line-height: 1em;
   font-family: 'Roboto Mono', monospace;
+}
+
+button {
+  background: var(--input-color);
+  border: none;
+  height: 1em;
+  box-sizing: content-box;
+  padding: 0.5em 0.5em calc(0.5em - 2px) 0.5em;
+  margin: 0 0 2px;
+}
+
+button:focus {
+  outline: none;
 }
 
 body {

@@ -1,7 +1,13 @@
 import React from 'react';
 
 export function UnknownMessage({ message }) {
-  return <>UNRECOGNIZED!</>;
+  return (
+    <Message name="Unrecognized Message" message={message}>
+      <Info label="Data">
+        <Hex data={message.data} />
+      </Info>
+    </Message>
+  );
 }
 
 export function Message({ message, name, children }) {
