@@ -104,6 +104,8 @@ article.midi-message {
   background: var(--b_low);
   overflow: hidden;
   margin-bottom: 2px;
+  border-left: solid 0.5em var(--b_med);
+  position: relative;
 }
 
 article.midi-message header {

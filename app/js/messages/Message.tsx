@@ -10,13 +10,13 @@ export function UnknownMessage({ message }) {
   );
 }
 
-export function Message({ message, name, children }) {
+export function Message({ message, name, children = undefined }) {
   return (
     <article className="midi-message">
       <header>
         <time>{message.timeLabel}</time>
         <h2>{name}</h2>
-        <div className="source">Arturia KeyLab</div>
+        <div className="source">{message.sourceLabel}</div>
       </header>
       <div className="message-info">{children}</div>
     </article>

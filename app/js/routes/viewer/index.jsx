@@ -18,11 +18,15 @@ export function MidiViewer(props) {
         if (!cancelled) {
           let midi = decodeMidiFile(new Uint8Array(buffer));
 
-          let newMessages = midi.tracks
-            .flat()
-            .map(m => ({ timeLabel: m.time, ...m }));
+          let tracks = midi.tracks.map((track, i) =>
+            track.map(m => ({
+              timeLabel: m.time,
+              sourceLabel: `Track ${i + 1}`,
+              ...m
+            }))
+          );
 
-          setMessages(newMessages);
+          setMessages(tracks.flat());
         }
       });
 
