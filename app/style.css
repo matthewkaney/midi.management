@@ -212,3 +212,37 @@ input[type='checkbox']:checked.toggle + *:before {
   content: '〇';
   top: 0.55em;
 }
+
+.piano-ui {
+  height: 64px;
+}
+
+.piano-ui > div:first-child {
+  height: 60%;
+}
+
+.piano-ui .piano-ui-key {
+  border: none;
+}
+
+.piano-ui .piano-ui-white-key {
+  background: var(--b_low);
+}
+
+.piano-ui .piano-ui-white-key:not(:last-child) {
+  margin-right: 2px;
+}
+
+.piano-ui .piano-ui-black-key {
+  background: var(--b_high);
+  border: solid 2px var(--background);
+  border-top: none;
+}
+
+.piano-ui .piano-ui-key.sustained {
+  background: var(--c-00);
+}
+
+.piano-ui .piano-ui-key.active {
+  background: var(--c-03);
+}

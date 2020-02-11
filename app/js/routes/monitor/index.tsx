@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import { receiveMIDI, receiveMidiInputs } from '@musedlab/midi/web';
+import { onCurrentNotes } from '@musedlab/midi/messages/handlers';
+
 import { MessageTypes } from '../../names/messageTypes';
+
+import { Piano } from '@musedlab/piano-ui';
 
 import { MessageList } from '../../messages/MessageList';
 import { LiveMessage } from '../../messages/LiveMessage';
@@ -105,6 +109,23 @@ export function MidiMonitor(props) {
     [statusFilter, midiFilter, setMessages]
   );
 
+  // Currently held notes
+  let [currentNotes, setCurrentNotes] = useState([]);
+
+  useEffect(
+    () =>
+      receiveMIDI(
+        onCurrentNotes(n => {
+          setCurrentNotes(n);
+        })
+      ),
+    [setCurrentNotes]
+  );
+
+  // TODO: Filter current notes by MIDI input filter
+
+  // TODO: Memoized callback for piano keyboard
+
   return (
     <>
       <section className="monitor">
@@ -124,6 +145,7 @@ export function MidiMonitor(props) {
             />
           ))}
         </div>
+        <Piano />
       </section>
       <Filters
         midiFilter={midiFilter}
