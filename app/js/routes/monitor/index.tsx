@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { render } from 'react-dom';
 
 import { receiveMIDI, receiveMidiInputs } from '@musedlab/midi/web';
 import { MessageTypes } from '../../names/messageTypes';
@@ -39,13 +38,13 @@ export function MidiMonitor(props) {
   }, [statusFilter]);
 
   // List of connected Midi Inputs and related filters
-  let [midiInputs, setMidiInputs] = useState([]);
+  let [midiInputs, setMidiInputs] = useState<MIDIInput[]>([]);
   let [midiFilter, setMidiFilter] = useState({});
 
   useEffect(() => {
     return receiveMidiInputs(inputs => {
       setMidiFilter(filter => {
-        let newInputs = {};
+        let newInputs: { [id: string]: boolean } = {};
 
         for (let input of inputs) {
           if (!(input.id in filter)) {
@@ -77,7 +76,6 @@ export function MidiMonitor(props) {
   useEffect(
     () =>
       receiveMIDI(m => {
-        window.performance.mark('receive midi');
         let [status] = m.data;
         let type = status < 0xf0 ? status & 0xf0 : status;
 
@@ -137,7 +135,3 @@ export function MidiMonitor(props) {
     </>
   );
 }
-
-window.onload = () => {
-  render(<MidiMonitor />, document.getElementById('root'));
-};
