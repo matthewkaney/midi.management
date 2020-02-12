@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import { receiveMIDI, receiveMidiInputs } from '@musedlab/midi/web';
-import { onCurrentNotes } from '@musedlab/midi/messages/handlers';
+import { onHeldNotes } from '@musedlab/midi/messages';
 
 import { MessageTypes } from '../../names/messageTypes';
 
@@ -115,7 +115,7 @@ export function MidiMonitor(props) {
   useEffect(
     () =>
       receiveMIDI(
-        onCurrentNotes(n => {
+        onHeldNotes(n => {
           setCurrentNotes(n);
         })
       ),
@@ -124,7 +124,10 @@ export function MidiMonitor(props) {
 
   // TODO: Filter current notes by MIDI input filter
 
-  // TODO: Memoized callback for piano keyboard
+  const keyClassFn = useCallback(
+    key => (currentNotes.some(n => n.key === key) ? ['active'] : []),
+    [currentNotes]
+  );
 
   return (
     <>
@@ -145,7 +148,7 @@ export function MidiMonitor(props) {
             />
           ))}
         </div>
-        <Piano />
+        <Piano keyClass={keyClassFn} />
       </section>
       <Filters
         midiFilter={midiFilter}

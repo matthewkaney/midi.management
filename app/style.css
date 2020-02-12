@@ -214,7 +214,8 @@ input[type='checkbox']:checked.toggle + *:before {
 }
 
 .piano-ui {
-  height: 64px;
+  margin-top: 1em;
+  height: 4em;
 }
 
 .piano-ui > div:first-child {
@@ -243,6 +244,10 @@ input[type='checkbox']:checked.toggle + *:before {
   background: var(--c-00);
 }
 
-.piano-ui .piano-ui-key.active {
+.piano-ui .piano-ui-white-key.active {
   background: var(--c-03);
+}
+
+.piano-ui .piano-ui-black-key.active {
+  background: var(--c-04);
 }
