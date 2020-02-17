@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import { receiveMIDI, receiveMidiInputs } from '@musedlab/midi/web';
-import { onHeldNotes } from '@musedlab/midi/messages';
+// import { onHeldNotes } from '@musedlab/midi/messages';
 
 import { MessageTypes } from '../../names/messageTypes';
 
-import { Piano } from '@musedlab/piano-ui';
+// import { Piano } from '@musedlab/piano-ui';
 
 import { MessageList } from '../../messages/MessageList';
 import { LiveMessage } from '../../messages/LiveMessage';
 
 import { Filters } from '../../filters';
+
+import { useSlowState } from '../../useSlowState';
 
 let messageId = 0;
 
@@ -64,7 +66,7 @@ export function MidiMonitor(props) {
   }, [setMidiInputs, setMidiFilter]);
 
   // List of message objects
-  let [messages, setMessages] = useState([[]]);
+  let [messages, setMessages] = useSlowState([[]]);
 
   let pushMessage = useCallback(
     message => {
@@ -110,24 +112,24 @@ export function MidiMonitor(props) {
   );
 
   // Currently held notes
-  let [currentNotes, setCurrentNotes] = useState([]);
+  // let [currentNotes, setCurrentNotes] = useState([]);
 
-  useEffect(
-    () =>
-      receiveMIDI(
-        onHeldNotes(n => {
-          setCurrentNotes(n);
-        })
-      ),
-    [setCurrentNotes]
-  );
+  // useEffect(
+  //   () =>
+  //     receiveMIDI(
+  //       onHeldNotes(n => {
+  //         setCurrentNotes(n);
+  //       })
+  //     ),
+  //   [setCurrentNotes]
+  // );
 
   // TODO: Filter current notes by MIDI input filter
 
-  const keyClassFn = useCallback(
-    key => (currentNotes.some(n => n.key === key) ? ['active'] : []),
-    [currentNotes]
-  );
+  // const keyClassFn = useCallback(
+  //   key => (currentNotes.some(n => n.key === key) ? ['active'] : []),
+  //   [currentNotes]
+  // );
 
   return (
     <>
@@ -148,7 +150,7 @@ export function MidiMonitor(props) {
             />
           ))}
         </div>
-        <Piano keyClass={keyClassFn} />
+        {/* <Piano keyClass={keyClassFn} /> */}
       </section>
       <Filters
         midiFilter={midiFilter}
