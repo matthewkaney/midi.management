@@ -3,6 +3,7 @@
     "esModuleInterop": true,
     "target": "ESNext",
     "jsx": "react",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "strict": true
   }
 }

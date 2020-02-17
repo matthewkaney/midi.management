@@ -7,10 +7,13 @@ import { MidiViewer } from './routes/viewer';
 
 function MidiManagement() {
   return (
-    <Router>
-      <MidiViewer path="viewer" />
-      <MidiMonitor path="monitor" />
-    </Router>
+    <>
+      <header>midi.management</header>
+      <Router>
+        <MidiMonitor path="monitor" />
+        <MidiViewer path="viewer" />
+      </Router>
+    </>
   );
 }
 

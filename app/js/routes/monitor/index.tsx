@@ -13,6 +13,7 @@ import { LiveMessage } from '../../messages/LiveMessage';
 import { Filters } from '../../filters';
 
 import { useSlowState } from '../../useSlowState';
+import { MidiMessage } from '@musedlab/midi/types-a762c7a3';
 
 let messageId = 0;
 
@@ -22,7 +23,7 @@ export function id() {
   return currentId;
 }
 
-let defaultStatusFilter;
+let defaultStatusFilter: { [type: number]: boolean };
 
 let savedStatusFilter = localStorage.getItem('type-filter');
 if (savedStatusFilter) {
@@ -35,7 +36,7 @@ if (savedStatusFilter) {
   }
 }
 
-export function MidiMonitor(props) {
+export function MidiMonitor() {
   // Filters for different message types
   let [statusFilter, setStatusFilter] = useState(defaultStatusFilter);
 
@@ -66,7 +67,7 @@ export function MidiMonitor(props) {
   }, [setMidiInputs, setMidiFilter]);
 
   // List of message objects
-  let [messages, setMessages] = useSlowState([[]]);
+  let [messages, setMessages] = useSlowState<MidiMessage[][]>([[]]);
 
   let pushMessage = useCallback(
     message => {
