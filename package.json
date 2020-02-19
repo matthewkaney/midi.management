@@ -13,6 +13,7 @@
     "@musedlab/midi": "file:../music-interface-toolkit/packages/midi",
     "@musedlab/piano-ui": "file:../music-interface-toolkit/packages/piano-ui",
     "@reach/router": "^1.2.1",
+    "immer": "^5.3.6",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },

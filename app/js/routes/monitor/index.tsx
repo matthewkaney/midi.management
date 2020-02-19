@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { produce } from 'immer';
 
 import { receiveMIDI, receiveMidiInputs } from '@musedlab/midi/web';
-// import { onHeldNotes } from '@musedlab/midi/messages';
 
 import { MessageTypes } from '../../names/messageTypes';
 
-// import { Piano } from '@musedlab/piano-ui';
-
-import { MessageList } from '../../messages/MessageList';
-import { LiveMessage } from '../../messages/LiveMessage';
+import { SourceMessageGroup } from '../../components/messages/SourceMessageGroup';
+import { LiveMessage } from '../../components/messages/LiveMessage';
 
 import { Filters } from '../../filters';
 
 import { useSlowState } from '../../useSlowState';
 import { MidiMessage } from '@musedlab/midi/types-a762c7a3';
+
+import { AutoScrollPane } from '../../components/AutoScrollPane';
 
 let messageId = 0;
 
@@ -66,15 +66,37 @@ export function MidiMonitor() {
     });
   }, [setMidiInputs, setMidiFilter]);
 
+  interface InputMessageList {
+    id: string;
+    name?: string;
+    manufacturer?: string;
+    messages: MidiMessage[][];
+  }
+
   // List of message objects
-  let [messages, setMessages] = useSlowState<MidiMessage[][]>([[]]);
+  let [messages, setMessages] = useSlowState<InputMessageList[]>([]);
 
   let pushMessage = useCallback(
     message => {
-      setMessages(list =>
-        list[0].length < 100
-          ? [[message, ...list[0]], ...list.slice(1)]
-          : [[message], ...list]
+      setMessages(
+        produce((inputs: InputMessageList[]) => {
+          if (
+            inputs.length > 0 &&
+            inputs[inputs.length - 1].id === message.input.id
+          ) {
+            let input = inputs[inputs.length - 1];
+            let messageGroup = input.messages[input.messages.length - 1];
+
+            if (messageGroup.length < 100) {
+              messageGroup.push(message);
+            } else {
+              input.messages.push([message]);
+            }
+          } else {
+            let { id, name, manufacturer } = message.input;
+            inputs.push({ id, name, manufacturer, messages: [[message]] });
+          }
+        })
       );
     },
     [setMessages]
@@ -112,46 +134,26 @@ export function MidiMonitor() {
     [statusFilter, midiFilter, setMessages]
   );
 
-  // Currently held notes
-  // let [currentNotes, setCurrentNotes] = useState([]);
-
-  // useEffect(
-  //   () =>
-  //     receiveMIDI(
-  //       onHeldNotes(n => {
-  //         setCurrentNotes(n);
-  //       })
-  //     ),
-  //   [setCurrentNotes]
-  // );
-
-  // TODO: Filter current notes by MIDI input filter
-
-  // const keyClassFn = useCallback(
-  //   key => (currentNotes.some(n => n.key === key) ? ['active'] : []),
-  //   [currentNotes]
-  // );
-
   return (
     <>
       <section className="monitor">
         <h1>Midi Monitor</h1>
         <button
           onClick={() => {
-            setMessages([[]]);
+            setMessages([]);
           }}>
           Clear
         </button>
-        <div className="monitor-scroll">
-          {messages.map((list, i) => (
-            <MessageList
+        <AutoScrollPane>
+          {messages.map(({ name, messages }, i) => (
+            <SourceMessageGroup
+              name={name}
               type={LiveMessage}
-              messages={list}
-              key={messages.length - i}
+              messages={messages}
+              key={i}
             />
           ))}
-        </div>
-        {/* <Piano keyClass={keyClassFn} /> */}
+        </AutoScrollPane>
       </section>
       <Filters
         midiFilter={midiFilter}
