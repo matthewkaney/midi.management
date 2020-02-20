@@ -135,7 +135,7 @@ export function MidiMonitor() {
   );
 
   return (
-    <div className="monitor-container">
+    <div className="container">
       <section className="monitor">
         <div className="monitor-controls">
           <button

@@ -3,12 +3,19 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { decodeMidiFile } from '@musedlab/midi/file';
 
 import { FileMessage } from '../../components/messages/FileMessage';
-import { id } from '../monitor';
+import { MidiMessage } from '@musedlab/midi/types-a762c7a3';
+import { SourceMessageGroup } from '../../components/messages/SourceMessageGroup';
 
-export function MidiViewer(props) {
-  let [messages, setMessages] = useState([]);
+export function MidiViewer() {
+  interface TrackMessageList {
+    id: number;
+    name: string;
+    messages: MidiMessage[][];
+  }
 
-  let [file, setFile] = useState(null);
+  let [messages, setMessages] = useState<TrackMessageList[]>([]);
+
+  let [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (file !== null) {
@@ -18,15 +25,18 @@ export function MidiViewer(props) {
         if (!cancelled) {
           let midi = decodeMidiFile(new Uint8Array(buffer));
 
-          let tracks = midi.tracks.map((track, i) =>
-            track.map(m => ({
-              timeLabel: m.time,
-              sourceLabel: `Track ${i + 1}`,
-              ...m
+          setMessages(
+            midi.tracks.map((track, i) => ({
+              id: i,
+              name: `Track ${i + 1}`,
+              messages: [
+                track.map(m => ({
+                  timeLabel: m.time,
+                  ...m
+                }))
+              ]
             }))
           );
-
-          setMessages(tracks.flat());
         }
       });
 
@@ -37,7 +47,7 @@ export function MidiViewer(props) {
   }, [file, setMessages]);
 
   let listenForDrop = useCallback(
-    node => {
+    (node: HTMLElement) => {
       if (node !== null) {
         node.addEventListener('dragenter', e => {
           node.style.background = 'blue';
@@ -56,7 +66,7 @@ export function MidiViewer(props) {
 
           node.style.background = 'none';
 
-          if (e.dataTransfer.items) {
+          if (e.dataTransfer && e.dataTransfer.items) {
             for (let item of e.dataTransfer.items) {
               if (item.kind === 'file') {
                 let file = item.getAsFile();
@@ -71,13 +81,17 @@ export function MidiViewer(props) {
   );
 
   return (
-    <section
-      className="viewer"
-      style={{ height: '100%', width: '100%' }}
-      ref={listenForDrop}>
-      {messages.map(m => (
-        <FileMessage message={m} key={id()} />
-      ))}
-    </section>
+    <div className="container">
+      <section className="viewer scroll" ref={listenForDrop}>
+        {messages.map(({ name, messages }, i) => (
+          <SourceMessageGroup
+            name={name}
+            type={FileMessage}
+            messages={messages}
+            key={i}
+          />
+        ))}
+      </section>
+    </div>
   );
 }

@@ -108,6 +108,22 @@ main {
   height: calc(100% - 2em);
 }
 
+/* LAYOUT BLOCKS */
+
+.container {
+  height: 100%;
+  display: flex;
+  box-sizing: border-box;
+  padding: 1em;
+}
+
+.scroll {
+  flex: 1;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+}
+
 /* SITE HEADER */
 
 header {
@@ -116,15 +132,16 @@ header {
   background: var(--b_low);
 }
 
-/* MONITOR PAGE */
-
-.monitor-container {
-  height: 100%;
-  display: flex;
-  box-sizing: border-box;
-  padding: 1em;
+header h1 {
+  padding: 0 1em;
+  margin: 0;
 }
 
+header h1::before {
+  content: '/';
+}
+
+/* MONITOR PAGE */
 .monitor {
   flex: 1;
   display: flex;
@@ -135,13 +152,6 @@ header {
 .monitor .monitor-controls {
   display: flex;
   justify-content: flex-end;
-}
-
-.monitor .scroll {
-  flex: 1;
-  padding: 0;
-  margin: 0;
-  overflow-y: auto;
 }
 
 .source-group {
@@ -171,6 +181,7 @@ article.midi-message:not(:last-child) {
 
 article.midi-message header {
   height: 2em;
+  padding: 0;
   display: flex;
   background: var(--b_low);
 }
