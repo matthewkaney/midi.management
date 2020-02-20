@@ -137,19 +137,36 @@ header {
   justify-content: flex-end;
 }
 
-.monitor .monitor-scroll {
+.monitor .scroll {
   flex: 1;
   padding: 0;
   margin: 0;
   overflow-y: auto;
 }
 
+.source-group {
+  border-left: solid 0.5em var(--b_med);
+}
+
+.source-group:not(:last-child) {
+  margin-bottom: 2px;
+}
+
+.source-group > header {
+  position: sticky;
+  top: 0;
+  background: var(--b_med);
+  line-height: 1em;
+  padding: 0.5em 0;
+}
+
 article.midi-message {
   background: var(--b_low);
   overflow: hidden;
+}
+
+article.midi-message:not(:last-child) {
   margin-bottom: 2px;
-  border-left: solid 0.5em var(--b_med);
-  position: relative;
 }
 
 article.midi-message header {
@@ -255,4 +272,43 @@ input[type='checkbox'].toggle + *:before {
 input[type='checkbox']:checked.toggle + *:before {
   content: '〇';
   top: 0.55em;
+}
+
+.piano-ui {
+  margin-top: 1em;
+  height: 4em;
+}
+
+.piano-ui > div:first-child {
+  height: 60%;
+}
+
+.piano-ui .piano-ui-key {
+  border: none;
+}
+
+.piano-ui .piano-ui-white-key {
+  background: var(--b_low);
+}
+
+.piano-ui .piano-ui-white-key:not(:last-child) {
+  margin-right: 2px;
+}
+
+.piano-ui .piano-ui-black-key {
+  background: var(--b_high);
+  border: solid 2px var(--background);
+  border-top: none;
+}
+
+.piano-ui .piano-ui-key.sustained {
+  background: var(--c-00);
+}
+
+.piano-ui .piano-ui-white-key.active {
+  background: var(--c-03);
+}
+
+.piano-ui .piano-ui-black-key.active {
+  background: var(--c-04);
 }

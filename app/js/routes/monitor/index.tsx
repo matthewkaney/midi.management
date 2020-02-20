@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { render } from 'react-dom';
+import { produce } from 'immer';
 
 import { receiveMIDI, receiveMidiInputs } from '@musedlab/midi/web';
+
 import { MessageTypes } from '../../names/messageTypes';
 
-import { MessageList } from '../../messages/MessageList';
-import { LiveMessage } from '../../messages/LiveMessage';
+import { SourceMessageGroup } from '../../components/messages/SourceMessageGroup';
+import { LiveMessage } from '../../components/messages/LiveMessage';
 
 import { Filters } from '../../filters';
+
+import { useSlowState } from '../../useSlowState';
+import { MidiMessage } from '@musedlab/midi/types-a762c7a3';
+
+import { AutoScrollPane } from '../../components/AutoScrollPane';
 
 let messageId = 0;
 
@@ -17,7 +23,7 @@ export function id() {
   return currentId;
 }
 
-let defaultStatusFilter;
+let defaultStatusFilter: { [type: number]: boolean };
 
 let savedStatusFilter = localStorage.getItem('type-filter');
 if (savedStatusFilter) {
@@ -30,7 +36,7 @@ if (savedStatusFilter) {
   }
 }
 
-export function MidiMonitor(props) {
+export function MidiMonitor() {
   // Filters for different message types
   let [statusFilter, setStatusFilter] = useState(defaultStatusFilter);
 
@@ -39,13 +45,13 @@ export function MidiMonitor(props) {
   }, [statusFilter]);
 
   // List of connected Midi Inputs and related filters
-  let [midiInputs, setMidiInputs] = useState([]);
+  let [midiInputs, setMidiInputs] = useState<MIDIInput[]>([]);
   let [midiFilter, setMidiFilter] = useState({});
 
   useEffect(() => {
     return receiveMidiInputs(inputs => {
       setMidiFilter(filter => {
-        let newInputs = {};
+        let newInputs: { [id: string]: boolean } = {};
 
         for (let input of inputs) {
           if (!(input.id in filter)) {
@@ -60,15 +66,37 @@ export function MidiMonitor(props) {
     });
   }, [setMidiInputs, setMidiFilter]);
 
+  interface InputMessageList {
+    id: string;
+    name?: string;
+    manufacturer?: string;
+    messages: MidiMessage[][];
+  }
+
   // List of message objects
-  let [messages, setMessages] = useState([[]]);
+  let [messages, setMessages] = useSlowState<InputMessageList[]>([]);
 
   let pushMessage = useCallback(
     message => {
-      setMessages(list =>
-        list[0].length < 100
-          ? [[message, ...list[0]], ...list.slice(1)]
-          : [[message], ...list]
+      setMessages(
+        produce((inputs: InputMessageList[]) => {
+          if (
+            inputs.length > 0 &&
+            inputs[inputs.length - 1].id === message.input.id
+          ) {
+            let input = inputs[inputs.length - 1];
+            let messageGroup = input.messages[input.messages.length - 1];
+
+            if (messageGroup.length < 100) {
+              messageGroup.push(message);
+            } else {
+              input.messages.push([message]);
+            }
+          } else {
+            let { id, name, manufacturer } = message.input;
+            inputs.push({ id, name, manufacturer, messages: [[message]] });
+          }
+        })
       );
     },
     [setMessages]
@@ -77,7 +105,6 @@ export function MidiMonitor(props) {
   useEffect(
     () =>
       receiveMIDI(m => {
-        window.performance.mark('receive midi');
         let [status] = m.data;
         let type = status < 0xf0 ? status & 0xf0 : status;
 
@@ -113,20 +140,21 @@ export function MidiMonitor(props) {
         <div className="monitor-controls">
           <button
             onClick={() => {
-              setMessages([[]]);
+              setMessages([]);
             }}>
             Clear
           </button>
         </div>
-        <div className="monitor-scroll">
-          {messages.map((list, i) => (
-            <MessageList
+        <AutoScrollPane>
+          {messages.map(({ name, messages }, i) => (
+            <SourceMessageGroup
+              name={name}
               type={LiveMessage}
-              messages={list}
-              key={messages.length - i}
+              messages={messages}
+              key={i}
             />
           ))}
-        </div>
+        </AutoScrollPane>
       </section>
       <Filters
         midiFilter={midiFilter}
@@ -138,7 +166,3 @@ export function MidiMonitor(props) {
     </div>
   );
 }
-
-window.onload = () => {
-  render(<MidiMonitor />, document.getElementById('root'));
-};

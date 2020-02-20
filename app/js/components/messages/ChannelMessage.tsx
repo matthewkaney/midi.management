@@ -12,7 +12,7 @@ import {
   isChannelPressure
 } from '@musedlab/midi/messages';
 
-import { getMidiNoteName } from '../names/pitches';
+import { getMidiNoteName } from '../../names/pitches';
 
 import { Message, Info } from './Message';
 
