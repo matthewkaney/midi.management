@@ -108,15 +108,16 @@ export function MidiMonitor(props) {
   );
 
   return (
-    <>
+    <div className="monitor-container">
       <section className="monitor">
-        <h1>Midi Monitor</h1>
-        <button
-          onClick={() => {
-            setMessages([[]]);
-          }}>
-          Clear
-        </button>
+        <div className="monitor-controls">
+          <button
+            onClick={() => {
+              setMessages([[]]);
+            }}>
+            Clear
+          </button>
+        </div>
         <div className="monitor-scroll">
           {messages.map((list, i) => (
             <MessageList
@@ -134,7 +135,7 @@ export function MidiMonitor(props) {
         setStatusFilter={setStatusFilter}
         midiInputs={midiInputs}
       />
-    </>
+    </div>
   );
 }
 

@@ -42,12 +42,36 @@
   --active-input-color: var(--c-00);
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--d-0);
+    --b_low: var(--d-1);
+    --b_med: var(--d-2);
+    --b_high: var(--d-3);
+    --f_high: var(--l-0);
+    --f_med: var(--l-5);
+    --f_low: var(--d-5);
+    --input-color: var(--d-1);
+    --active-input-color: var(--c-00);
+  }
+}
+
 * {
   color: var(--f_high);
   font-size: 16px;
   line-height: 1em;
   font-family: 'Roboto Mono', monospace;
 }
+
+/* GENERAL UI */
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+}
+
+/* INPUT UI */
 
 button {
   background: var(--input-color);
@@ -58,9 +82,15 @@ button {
   margin: 0 0 2px;
 }
 
+button:hover {
+  background: var(--active-input-color);
+}
+
 button:focus {
   outline: none;
 }
+
+/* MAIN LAYOUT */
 
 body {
   margin: 0;
@@ -69,21 +99,30 @@ body {
 
 html,
 body,
-section#root {
+section#root,
+main > div {
   height: 100%;
 }
 
-section#root > div {
+main {
+  height: calc(100% - 2em);
+}
+
+/* SITE HEADER */
+
+header {
+  height: 1em;
+  padding: 0.5em 0;
+  background: var(--b_low);
+}
+
+/* MONITOR PAGE */
+
+.monitor-container {
+  height: 100%;
   display: flex;
   box-sizing: border-box;
-  height: 100%;
-  padding: 2em;
-}
-
-h1 {
-  font-weight: normal;
-  margin: 0;
-  line-height: 2em;
+  padding: 1em;
 }
 
 .monitor {
@@ -91,6 +130,11 @@ h1 {
   display: flex;
   flex-direction: column;
   margin-right: 1em;
+}
+
+.monitor .monitor-controls {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .monitor .monitor-scroll {
@@ -150,7 +194,7 @@ article.midi-message .message-info div {
 }
 
 aside.filters {
-  overflow-y: filter;
+  overflow-y: auto;
 }
 
 aside.filters h2,
