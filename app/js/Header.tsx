@@ -1,10 +1,9 @@
 import React from 'react';
-
 import { RouteComponentProps } from '@reach/router';
 
-interface HeaderProps extends RouteComponentProps {
+type HeaderProps = RouteComponentProps & {
   app?: React.ReactNode;
-}
+};
 
 export function Header({ app }: HeaderProps) {
   return (

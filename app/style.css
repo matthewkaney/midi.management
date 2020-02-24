@@ -126,19 +126,20 @@ main {
 
 /* SITE HEADER */
 
-header {
+#root > div > header {
   height: 1em;
   padding: 0.5em 0;
   background: var(--b_low);
 }
 
-header h1 {
+#root > div > header h1 {
   padding: 0 1em;
   margin: 0;
 }
 
-header h1::before {
-  content: '/';
+#root > div > header h1::before {
+  content: 'midi.management/';
+  color: var(--f_med);
 }
 
 /* MONITOR PAGE */
