@@ -1,4 +1,5 @@
 import React from 'react';
+import { MidiMessage } from '@musedlab/midi/types-a762c7a3';
 
 export function UnknownMessage({ message }) {
   return (
@@ -10,7 +11,13 @@ export function UnknownMessage({ message }) {
   );
 }
 
-export function Message({ message, name, children = undefined }) {
+type MessageProps = {
+  message: MidiMessage & { timeLabel: string; sourceLabel: string };
+  name: string;
+  children?: React.ReactNode;
+};
+
+export function Message({ message, name, children = undefined }: MessageProps) {
   return (
     <article className="midi-message">
       <header>

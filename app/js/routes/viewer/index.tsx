@@ -30,8 +30,9 @@ export function MidiViewer() {
               id: i,
               name: `Track ${i + 1}`,
               messages: [
-                track.map(m => ({
+                track.map((m, j) => ({
                   timeLabel: m.time,
+                  id: j,
                   ...m
                 }))
               ]

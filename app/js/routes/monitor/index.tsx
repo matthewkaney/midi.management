@@ -120,10 +120,7 @@ export function MidiMonitor() {
             .formatToParts(date)
             .map(part =>
               part.type === 'second'
-                ? `${part.value}.${date
-                    .getMilliseconds()
-                    .toString()
-                    .padStart(3, '0')}`
+                ? (date.getSeconds() + date.getMilliseconds() / 1000).toFixed(3)
                 : part.value
             )
             .join('');
