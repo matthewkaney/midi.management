@@ -13,8 +13,7 @@ function Filters({
 }) {
   return (
     <aside className="filters">
-      <h2>Incoming Message Filters</h2>
-      <h3>MIDI Input</h3>
+      <h3>Filter Input</h3>
       <FilterList filter={midiFilter} changeFilter={setMidiFilter}>
         {midiInputs.map(({ id, name, manufacturer }) => (
           <Filter key={id} id={id}>
@@ -22,7 +21,7 @@ function Filters({
           </Filter>
         ))}
       </FilterList>
-      <h3>Message Type</h3>
+      <h3>Filter Message Type</h3>
       <FilterList filter={statusFilter} changeFilter={setStatusFilter}>
         <StatusFilter id={0x80} />
         <StatusFilter id={0x90} />
