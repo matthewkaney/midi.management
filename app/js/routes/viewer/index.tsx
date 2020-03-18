@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
+import { MIDIMessage } from '@musedlab/midi';
 import { decodeMidiFile } from '@musedlab/midi/file';
 
 import { FileMessage } from '../../components/messages/FileMessage';
-import { MidiMessage } from '@musedlab/midi/types-a762c7a3';
 import { SourceMessageGroup } from '../../components/messages/SourceMessageGroup';
 
 export function MidiViewer() {
   interface TrackMessageList {
     id: number;
     name: string;
-    messages: MidiMessage[][];
+    messages: MIDIMessage[][];
   }
 
   let [messages, setMessages] = useState<TrackMessageList[]>([]);
@@ -67,12 +67,9 @@ export function MidiViewer() {
 
           node.style.background = 'none';
 
-          if (e.dataTransfer && e.dataTransfer.items) {
-            for (let item of e.dataTransfer.items) {
-              if (item.kind === 'file') {
-                let file = item.getAsFile();
-                setFile(file);
-              }
+          if (e.dataTransfer) {
+            for (let file of e.dataTransfer.files) {
+              setFile(file);
             }
           }
         });

@@ -23,12 +23,14 @@ export function useSlowState<S>(initialState: S) {
 }
 
 class BatchUpdater<S> {
-  updates: React.SetStateAction<S>[] = [];
+  updates: React.SetStateAction<S>[];
   dispatch: React.Dispatch<React.SetStateAction<S>>;
-  frameId: null | number = null;
+  frameId: null | number;
 
   constructor(dispatch: React.Dispatch<React.SetStateAction<S>>) {
+    this.updates = [];
     this.dispatch = dispatch;
+    this.frameId = null;
   }
 
   update(update: React.SetStateAction<S>) {

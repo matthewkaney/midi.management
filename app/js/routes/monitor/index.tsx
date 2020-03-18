@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { produce } from 'immer';
 
+import { MIDIMessage } from '@musedlab/midi';
 import { receiveMIDI, receiveMidiInputs } from '@musedlab/midi/web';
 
 import { MessageTypes } from '../../names/messageTypes';
@@ -11,7 +12,6 @@ import { LiveMessage } from '../../components/messages/LiveMessage';
 import { Filters } from '../../filters';
 
 import { useSlowState } from '../../useSlowState';
-import { MidiMessage } from '@musedlab/midi/types-a762c7a3';
 
 import { AutoScrollPane } from '../../components/AutoScrollPane';
 
@@ -70,7 +70,7 @@ export function MidiMonitor() {
     id: string;
     name?: string;
     manufacturer?: string;
-    messages: MidiMessage[][];
+    messages: MIDIMessage[][];
   }
 
   // List of message objects
