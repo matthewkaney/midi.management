@@ -1,7 +1,11 @@
 import React from 'react';
-import { MidiMessage } from '@musedlab/midi/types-a762c7a3';
+import { MIDIData, MIDIMessage } from '@musedlab/midi';
 
-export function UnknownMessage({ message }) {
+export type MessageDisplayProps = {
+  message: MIDIMessage & { timeLabel: string; sourceLabel: string };
+};
+
+export function UnknownMessage({ message }: MessageDisplayProps) {
   return (
     <Message name="Unrecognized Message" message={message}>
       <Info label="Data">
@@ -11,8 +15,7 @@ export function UnknownMessage({ message }) {
   );
 }
 
-type MessageProps = {
-  message: MidiMessage & { timeLabel: string; sourceLabel: string };
+type MessageProps = MessageDisplayProps & {
   name: string;
   children?: React.ReactNode;
 };
@@ -30,7 +33,11 @@ export function Message({ message, name, children = undefined }: MessageProps) {
   );
 }
 
-export function Hex({ data }) {
+type HexProps = {
+  data: MIDIData;
+};
+
+export function Hex({ data }: HexProps) {
   return (
     <>
       {[...data]
@@ -41,7 +48,12 @@ export function Hex({ data }) {
   );
 }
 
-export function Info({ label, children }) {
+type InfoProps = {
+  label: string;
+  children?: React.ReactNode;
+};
+
+export function Info({ label, children }: InfoProps) {
   return (
     <div>
       <h3>{label}:&nbsp;</h3>

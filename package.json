@@ -2,7 +2,7 @@
   "name": "midi-management",
   "version": "0.0.0",
   "scripts": {
-    "clean": "rm -rf .cache public",
+    "clean": "rm -rf .parcel-cache public",
     "dev": "parcel serve app/index.html",
     "build": "parcel build app/index.html --dist-dir public --no-source-maps",
     "deploy": "npm run clean && npm run build && firebase deploy"

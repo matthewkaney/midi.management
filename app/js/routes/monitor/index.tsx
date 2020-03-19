@@ -82,7 +82,7 @@ export function MidiMonitor() {
         produce((inputs: InputMessageList[]) => {
           if (
             inputs.length > 0 &&
-            inputs[inputs.length - 1].id === message.input.id
+            inputs[inputs.length - 1].id === message.port
           ) {
             let input = inputs[inputs.length - 1];
             let messageGroup = input.messages[input.messages.length - 1];
@@ -93,7 +93,10 @@ export function MidiMonitor() {
               input.messages.push([message]);
             }
           } else {
-            let { id, name, manufacturer } = message.input;
+            //let { id, name, manufacturer } = message.input;
+            let id = message.port;
+            let name = 'test';
+            let manufacturer = 'test1';
             inputs.push({ id, name, manufacturer, messages: [[message]] });
           }
         })
@@ -108,7 +111,9 @@ export function MidiMonitor() {
         let [status] = m.data;
         let type = status < 0xf0 ? status & 0xf0 : status;
 
-        if (statusFilter[type] && midiFilter[m.input.id]) {
+        console.log(m);
+
+        if (statusFilter[type] && midiFilter[m.port]) {
           // Format time label
           let formatter = new Intl.DateTimeFormat(undefined, {
             hour: 'numeric',

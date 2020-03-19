@@ -14,9 +14,9 @@ import {
 
 import { getMidiNoteName } from '../../names/pitches';
 
-import { Message, Info } from './Message';
+import { MessageDisplayProps, Message, Info } from './Message';
 
-export function ChannelMessage({ message }) {
+export function ChannelMessage({ message }: MessageDisplayProps) {
   let ChannelInfo = <Info label="Channel">{getChannel(message) + 1}</Info>;
   let key: number, velocity: number, pressure: number;
 
@@ -99,5 +99,7 @@ export function ChannelMessage({ message }) {
         <Info label="Program">{program}</Info>
       </Message>
     );
+  } else {
+    return null;
   }
 }
