@@ -26,10 +26,32 @@ type LiveRoomProps = RouteComponentProps & {
 };
 
 function LiveRoom({ id }: LiveRoomProps) {
-  const [docRef] = useState(database.collection('live-sessions').doc(id));
+  const [docRef] = useState(database.collection('live_sessions').doc(id));
 
   useEffect(() => {
-    docRef.set({ hello: 'world' });
+    let cancelled = false;
+
+    // async function connect() {
+    //   const peerConnection = new RTCPeerConnection();
+
+    //   const offer = await peerConnection.createOffer();
+    //   await peerConnection.setLocalDescription(offer);
+
+    //   const roomWithOffer = {
+    //     offer: {
+    //       type: offer.type,
+    //       sdp: offer.sdp,
+    //     },
+    //   };
+
+    //   await docRef.set(roomWithOffer);
+    // }
+
+    // connect();
+
+    return () => {
+      cancelled = true;
+    };
   }, [docRef]);
 
   return <h1>{id}</h1>;
