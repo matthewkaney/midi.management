@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "clean": "rm -rf .parcel-cache public",
-    "dev": "parcel serve app/index.html",
+    "dev": "parcel serve app/index.html --dist-dir public",
     "build": "parcel build app/index.html --dist-dir public --no-source-maps",
     "deploy": "npm run clean && npm run build && firebase deploy"
   },

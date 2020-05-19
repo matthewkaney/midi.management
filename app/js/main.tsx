@@ -6,17 +6,19 @@ import { Header } from './Header';
 
 import { MidiMonitor } from './routes/monitor';
 import { MidiViewer } from './routes/viewer';
+import { MidiLive } from './routes/live';
 
 function MidiManagement() {
   return (
     <>
       <Router primary={false}>
-        <Header path="/:app" />
+        <Header path="/:app/*" />
       </Router>
       <main>
         <Router>
           <MidiViewer path="viewer" />
           <MidiMonitor path="monitor" />
+          <MidiLive path="live/*" />
         </Router>
       </main>
     </>
