@@ -2,26 +2,19 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Router } from '@reach/router';
 
-import { Header } from './Header';
-
+import { MidiDevices } from './routes/devices';
 import { MidiMonitor } from './routes/monitor';
 import { MidiViewer } from './routes/viewer';
 import { MidiLive } from './routes/live';
 
 function MidiManagement() {
   return (
-    <>
-      <Router primary={false}>
-        <Header path="/:app/*" />
-      </Router>
-      <main>
-        <Router>
-          <MidiViewer path="viewer" />
-          <MidiMonitor path="monitor" />
-          <MidiLive path="live/*" />
-        </Router>
-      </main>
-    </>
+    <Router>
+      <MidiDevices path="devices" />
+      <MidiViewer path="viewer" />
+      <MidiMonitor path="monitor" />
+      <MidiLive path="live/*" />
+    </Router>
   );
 }
 

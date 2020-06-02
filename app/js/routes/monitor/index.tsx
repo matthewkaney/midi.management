@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { produce } from 'immer';
 
+import { Header } from '../../components/header/Header';
+
 import { MIDIMessage } from '@musedlab/midi';
 import { receiveMIDI, receiveMidiInputs } from '@musedlab/midi/web';
 
@@ -49,8 +51,8 @@ export function MidiMonitor() {
   let [midiFilter, setMidiFilter] = useState({});
 
   useEffect(() => {
-    return receiveMidiInputs(inputs => {
-      setMidiFilter(filter => {
+    return receiveMidiInputs((inputs) => {
+      setMidiFilter((filter) => {
         let newInputs: { [id: string]: boolean } = {};
 
         for (let input of inputs) {
@@ -77,7 +79,7 @@ export function MidiMonitor() {
   let [messages, setMessages] = useSlowState<InputMessageList[]>([]);
 
   let pushMessage = useCallback(
-    message => {
+    (message) => {
       setMessages(
         produce((inputs: InputMessageList[]) => {
           if (
@@ -107,7 +109,7 @@ export function MidiMonitor() {
 
   useEffect(
     () =>
-      receiveMIDI(m => {
+      receiveMIDI((m) => {
         let [status] = m.data;
         let type = status < 0xf0 ? status & 0xf0 : status;
 
@@ -118,12 +120,12 @@ export function MidiMonitor() {
           let formatter = new Intl.DateTimeFormat(undefined, {
             hour: 'numeric',
             minute: 'numeric',
-            second: 'numeric'
+            second: 'numeric',
           });
           let date = new Date(performance.timeOrigin + m.time);
           let timeLabel = formatter
             .formatToParts(date)
-            .map(part =>
+            .map((part) =>
               part.type === 'second'
                 ? (date.getSeconds() + date.getMilliseconds() / 1000).toFixed(3)
                 : part.value
@@ -137,34 +139,39 @@ export function MidiMonitor() {
   );
 
   return (
-    <div className="container">
-      <section className="monitor">
-        <div className="monitor-controls">
-          <button
-            onClick={() => {
-              setMessages([]);
-            }}>
-            Clear
-          </button>
+    <>
+      <Header />
+      <main>
+        <div className="container">
+          <section className="monitor">
+            <div className="monitor-controls">
+              <button
+                onClick={() => {
+                  setMessages([]);
+                }}>
+                Clear
+              </button>
+            </div>
+            <AutoScrollPane>
+              {messages.map(({ name, messages }, i) => (
+                <SourceMessageGroup
+                  name={name}
+                  type={LiveMessage}
+                  messages={messages}
+                  key={i}
+                />
+              ))}
+            </AutoScrollPane>
+          </section>
+          <Filters
+            midiFilter={midiFilter}
+            setMidiFilter={setMidiFilter}
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+            midiInputs={midiInputs}
+          />
         </div>
-        <AutoScrollPane>
-          {messages.map(({ name, messages }, i) => (
-            <SourceMessageGroup
-              name={name}
-              type={LiveMessage}
-              messages={messages}
-              key={i}
-            />
-          ))}
-        </AutoScrollPane>
-      </section>
-      <Filters
-        midiFilter={midiFilter}
-        setMidiFilter={setMidiFilter}
-        statusFilter={statusFilter}
-        setStatusFilter={setStatusFilter}
-        midiInputs={midiInputs}
-      />
-    </div>
+      </main>
+    </>
   );
 }

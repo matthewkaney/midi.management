@@ -99,8 +99,8 @@ body {
 
 html,
 body,
-section#root,
-main > div {
+#root,
+#root > div {
   height: 100%;
 }
 
