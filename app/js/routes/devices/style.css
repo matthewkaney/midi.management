@@ -1,0 +1,19 @@
+.device-list {
+  flex: 1;
+}
+
+.device-list:not(:last-child) {
+  margin-right: 8px;
+}
+
+.device-list ul {
+  padding: 0;
+}
+
+.device-list li {
+  padding: 0 0.5em;
+  line-height: 2em;
+  background: var(--b_low);
+  list-style: none;
+  margin-bottom: 2px;
+}
