@@ -16,4 +16,11 @@
   background: var(--b_low);
   list-style: none;
   margin-bottom: 2px;
+  overflow: hidden;
+}
+
+.device-list li::after {
+  margin-bottom: -2px;
+  display: block;
+  content: '';
 }

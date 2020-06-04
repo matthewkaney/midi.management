@@ -8,17 +8,21 @@ import './style.css';
 
 export function MidiDevices() {
   const [inputs, setInputs] = useState<MIDIInput[]>([]);
-  useEffect(() =>
-    receiveMidiInputs((i) => {
-      setInputs(i);
-    })
+  useEffect(
+    () =>
+      receiveMidiInputs((i) => {
+        setInputs(i);
+      }),
+    [setInputs]
   );
 
   const [outputs, setOutputs] = useState<MIDIOutput[]>([]);
-  useEffect(() =>
-    receiveMidiOutputs((o) => {
-      setOutputs(o);
-    })
+  useEffect(
+    () =>
+      receiveMidiOutputs((o) => {
+        setOutputs(o);
+      }),
+    [setOutputs]
   );
 
   return (
