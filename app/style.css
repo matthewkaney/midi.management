@@ -134,10 +134,10 @@ main {
   background: var(--b_low);
 } */
 
-#root > div > header h1 {
+/* #root > div > header h1 {
   padding: 0 1em;
   margin: 0;
-}
+} */
 
 #root > div > header h1::before {
   content: 'midi.management/';

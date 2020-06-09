@@ -8,7 +8,17 @@ type HeaderProps = {
 export function Header({ title, children }: HeaderProps) {
   return (
     <header>
-      <h1>{title}</h1>
+      <div className="dropdown" tabIndex={0}>
+        <div className="head">
+          <h1>{title}</h1>
+        </div>
+        <nav>
+          <ul>
+            <li>devices</li>
+            <li>monitor</li>
+          </ul>
+        </nav>
+      </div>
       {children}
     </header>
   );

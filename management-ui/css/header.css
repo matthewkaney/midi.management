@@ -2,5 +2,60 @@ header {
   background: var(--b_low);
   height: 2em;
   display: flex;
+}
+
+header .right {
+  flex: 1;
   justify-content: flex-end;
+}
+
+h1 {
+  padding: 0.5em 0;
+  margin: 0;
+}
+
+.dropdown:focus {
+  outline: none;
+}
+
+.dropdown .head {
+  padding: 0 2em 0 1em;
+  overflow: hidden;
+}
+
+.dropdown .head:hover,
+.dropdown:focus .head {
+  background: var(--b_med);
+  padding-right: calc(2em - 2px);
+  border-right: solid 2px var(--background);
+}
+
+.dropdown nav {
+  display: none;
+  overflow: hidden;
+  border-top: solid 2px var(--background);
+  border-right: solid 2px var(--background);
+}
+
+.dropdown:focus nav {
+  display: block;
+}
+
+.dropdown nav ul {
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown nav li {
+  height: calc(2em - 2px);
+  background: var(--b_med);
+  border-bottom: solid 2px var(--background);
+  overflow: hidden;
+  list-style: none;
+  line-height: 2em;
+  padding: 0 1em;
+}
+
+.dropdown nav li:first-child {
+  margin-top: -2px;
 }
