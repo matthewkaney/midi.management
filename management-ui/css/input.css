@@ -1,0 +1,11 @@
+input[type='text'] {
+  border: solid 2px var(--b_med);
+  margin: 2px 0;
+  background: var(--background);
+  font-size: 1em;
+  line-height: 1em;
+}
+input[type='text']:focus {
+  outline: none;
+  border-color: var(--active-input-color);
+}

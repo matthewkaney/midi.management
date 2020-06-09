@@ -1,0 +1,6 @@
+header {
+  background: var(--b_low);
+  height: 2em;
+  display: flex;
+  justify-content: flex-end;
+}
