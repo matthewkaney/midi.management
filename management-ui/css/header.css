@@ -21,10 +21,11 @@ h1 {
 .dropdown .head {
   padding: 0 2em 0 1em;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .dropdown .head:hover,
-.dropdown:focus .head {
+.dropdown.open .head {
   background: var(--b_med);
   padding-right: calc(2em - 2px);
   border-right: solid 2px var(--background);
@@ -33,11 +34,13 @@ h1 {
 .dropdown nav {
   display: none;
   overflow: hidden;
+  position: relative;
+  z-index: 1;
   border-top: solid 2px var(--background);
   border-right: solid 2px var(--background);
 }
 
-.dropdown:focus nav {
+.dropdown.open nav {
   display: block;
 }
 
