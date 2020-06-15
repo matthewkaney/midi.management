@@ -2,11 +2,23 @@ header {
   background: var(--b_low);
   height: 2em;
   display: flex;
+  --input-color: var(--b_med);
+}
+
+header button {
+  padding: calc(0.5em - 2px) 0.5em;
+  margin: 2px 0.5em;
 }
 
 header .right {
+  margin-right: 1em;
   flex: 1;
+  display: flex;
   justify-content: flex-end;
+}
+
+header .right > :last-child {
+  margin-right: 0;
 }
 
 h1 {

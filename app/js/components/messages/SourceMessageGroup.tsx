@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { MessageList } from './MessageList';
-import { MidiMessage } from '@musedlab/midi/types-a762c7a3';
 
 export function SourceMessageGroup({ name, type, messages }) {
   return (

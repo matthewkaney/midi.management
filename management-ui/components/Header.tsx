@@ -9,7 +9,7 @@ export function Header({ title, children }: HeaderProps) {
   return (
     <header>
       {title}
-      {children}
+      <div className="right">{children}</div>
     </header>
   );
 }

@@ -9,7 +9,7 @@ function Filters({
   setMidiFilter,
   statusFilter,
   setStatusFilter,
-  midiInputs
+  midiInputs,
 }) {
   return (
     <aside className="filters">
@@ -49,13 +49,13 @@ function Filters({
 function FilterList({ filter, changeFilter, children }) {
   return (
     <ul>
-      {children.map(child =>
+      {children.map((child) =>
         React.cloneElement(child, {
           key: child.props.id,
           value: filter[child.props.id],
-          onChange: value => {
-            changeFilter(filter => ({ ...filter, [child.props.id]: value }));
-          }
+          onChange: (value) => {
+            changeFilter((filter) => ({ ...filter, [child.props.id]: value }));
+          },
         })
       )}
     </ul>
@@ -63,7 +63,7 @@ function FilterList({ filter, changeFilter, children }) {
 }
 
 function StatusFilter(props) {
-  return <Filter {...props}>{MessageTypes[props.id]}</Filter>;
+  return <Filter {...props}>{MessageTypes.get(props.id)}</Filter>;
 }
 
 function Filter({ value, onChange, children }) {
@@ -74,7 +74,7 @@ function Filter({ value, onChange, children }) {
           className="toggle"
           type="checkbox"
           checked={value}
-          onChange={e => {
+          onChange={(e) => {
             onChange(e.target.checked);
           }}></input>
         <span>{children}</span>

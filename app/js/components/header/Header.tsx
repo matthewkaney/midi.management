@@ -10,7 +10,7 @@ import {
 const links = ['devices', 'monitor'];
 
 type HeaderProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 export function Header({ children }: HeaderProps) {

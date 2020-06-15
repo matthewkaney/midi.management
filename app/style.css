@@ -169,7 +169,7 @@ main {
   position: sticky;
   top: 0;
   background: var(--b_med);
-  line-height: 1em;
+  height: 1em;
   padding: 0.5em 0;
 }
 
