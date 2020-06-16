@@ -34,6 +34,19 @@ h1 {
   padding: 0 2em 0 1em;
   overflow: hidden;
   cursor: pointer;
+  position: relative;
+}
+
+.dropdown .head::after {
+  content: '';
+  background: var(--f_high);
+  -webkit-mask-image: url('../icons/chevron.svg');
+  mask-image: url('../icons/chevron.svg');
+  width: 1em;
+  height: 1em;
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
 }
 
 .dropdown .head:hover,
@@ -41,6 +54,12 @@ h1 {
   background: var(--b_med);
   padding-right: calc(2em - 2px);
   border-right: solid 2px var(--background);
+}
+
+.dropdown .head:hover::after,
+.dropdown.open .head::after {
+  right: calc(0.5em - 2px);
+  background: var(--background);
 }
 
 .dropdown nav {
