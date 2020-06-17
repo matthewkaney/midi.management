@@ -275,17 +275,22 @@ input[type='checkbox']:checked.toggle + * {
   color: var(--f_inv);
 }
 
-input[type='checkbox'].toggle + *:before {
-  content: '✕';
-  font-weight: bold;
+input[type='checkbox'].toggle + *::before {
+  content: '';
   position: absolute;
   top: 0.5em;
   left: 0.5em;
+  width: 1em;
+  height: 1em;
+  background: currentColor;
+  -webkit-mask-image: url('../management-ui/icons/x.svg');
+  mask-image: url('../management-ui/icons/x.svg');
 }
 
-input[type='checkbox']:checked.toggle + *:before {
-  content: '〇';
-  top: 0.55em;
+input[type='checkbox']:checked.toggle + *::before {
+  content: '';
+  -webkit-mask-image: url('../management-ui/icons/o.svg');
+  mask-image: url('../management-ui/icons/o.svg');
 }
 
 .piano-ui {
