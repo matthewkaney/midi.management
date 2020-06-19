@@ -1,0 +1,28 @@
+/* MAIN LAYOUT */
+
+body {
+  margin: 0;
+}
+
+html,
+body,
+#root,
+#root > div {
+  height: 100%;
+}
+
+main {
+  height: calc(100% - 2em);
+  box-sizing: border-box;
+  padding: 1em 0.5em;
+}
+
+/* COLUMN PAGE LAYOUT */
+main.columns {
+  display: flex;
+  flex-direction: row;
+}
+
+main.columns > *:not(::last-child) {
+  margin-right: 0.5em;
+}

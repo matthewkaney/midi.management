@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-import { receiveMidiInputs, receiveMidiOutputs } from '@musedlab/midi/web';
+import {
+  receiveMidiInputs,
+  receiveMidiOutputs,
+  receiveMIDI,
+} from '@musedlab/midi/web';
 
 import { Header } from '../../components/header/Header';
 
@@ -28,32 +32,68 @@ export function MidiDevices() {
   return (
     <>
       <Header />
-      <main>
-        <div className="container">
-          <div className="device-list">
-            <h2>Inputs</h2>
-            <ul>
-              {inputs.map((i) => (
-                <li key={i.id}>
-                  {i.name}
-                  {i.manufacturer ? `: ${i.manufacturer}` : null}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="device-list">
-            <h2>Outputs</h2>
-            <ul>
-              {outputs.map((i) => (
-                <li key={i.id}>
-                  {i.name}
-                  {i.manufacturer ? `: ${i.manufacturer}` : null}
-                </li>
-              ))}
-            </ul>
-          </div>
+      <main className="columns">
+        <div className="device-list">
+          <h2>Inputs</h2>
+          <ul>
+            {inputs.map((i) => (
+              <DeviceListing key={i.id} device={i} />
+            ))}
+          </ul>
+        </div>
+        <div className="device-list">
+          <h2>Outputs</h2>
+          <ul>
+            {outputs.map((o) => (
+              <DeviceListing key={o.id} device={o} />
+            ))}
+          </ul>
         </div>
       </main>
     </>
   );
+}
+
+type DeviceListingProps = {
+  device: MIDIInput | MIDIOutput;
+};
+
+function DeviceListing({ device }: DeviceListingProps) {
+  return (
+    <li>
+      <div className={`name ${device.type}`}>
+        {device.name}
+        {device.type === 'input' ? <TinyMonitor device={device} /> : null}
+      </div>
+      {device.manufacturer ? `: ${device.manufacturer}` : null}
+    </li>
+  );
+}
+
+type TinyMonitorProps = {
+  device: MIDIInput;
+};
+
+function TinyMonitor({ device }: TinyMonitorProps) {
+  let [isOn, setIsOn] = useState(false);
+
+  useEffect(() => {
+    let timer: number;
+
+    const closeMIDI = receiveMIDI((m) => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        setIsOn(false);
+      }, 100);
+
+      setIsOn(true);
+    }, device.id);
+
+    return () => {
+      window.clearTimeout(timer);
+      closeMIDI();
+    };
+  }, [device, setIsOn]);
+
+  return <div className={`tiny-monitor${isOn ? ' on' : ''}`} />;
 }

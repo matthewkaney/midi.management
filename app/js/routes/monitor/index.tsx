@@ -145,28 +145,26 @@ export function MidiMonitor() {
           Clear
         </button>
       </Header>
-      <main>
-        <div className="container">
-          <section className="monitor">
-            <AutoScrollPane>
-              {messages.map(({ name, messages }, i) => (
-                <SourceMessageGroup
-                  name={name}
-                  type={LiveMessage}
-                  messages={messages}
-                  key={i}
-                />
-              ))}
-            </AutoScrollPane>
-          </section>
-          <Filters
-            midiFilter={midiFilter}
-            setMidiFilter={setMidiFilter}
-            statusFilter={statusFilter}
-            setStatusFilter={setStatusFilter}
-            midiInputs={midiInputs}
-          />
-        </div>
+      <main className="columns">
+        <section className="monitor">
+          <AutoScrollPane>
+            {messages.map(({ name, messages }, i) => (
+              <SourceMessageGroup
+                name={name}
+                type={LiveMessage}
+                messages={messages}
+                key={i}
+              />
+            ))}
+          </AutoScrollPane>
+        </section>
+        <Filters
+          midiFilter={midiFilter}
+          setMidiFilter={setMidiFilter}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+          midiInputs={midiInputs}
+        />
       </main>
     </>
   );

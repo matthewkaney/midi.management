@@ -61,16 +61,11 @@
 * {
   color: var(--f_high);
   font-size: 16px;
-  line-height: 1em;
   font-family: 'Roboto Mono', monospace;
 }
 
-/* GENERAL UI */
-
-h1,
-h2,
-h3 {
-  font-weight: normal;
+body {
+  background: var(--background);
 }
 
 /* INPUT UI */
@@ -92,32 +87,7 @@ button:focus {
   outline: none;
 }
 
-/* MAIN LAYOUT */
-
-body {
-  margin: 0;
-  background: var(--background);
-}
-
-html,
-body,
-#root,
-#root > div {
-  height: 100%;
-}
-
-main {
-  height: calc(100% - 2em);
-}
-
 /* LAYOUT BLOCKS */
-
-.container {
-  height: 100%;
-  display: flex;
-  box-sizing: border-box;
-  padding: 1em;
-}
 
 .scroll {
   flex: 1;
