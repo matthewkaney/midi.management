@@ -194,17 +194,6 @@ article.midi-message .message-info div {
   height: 1em;
 }
 
-aside.filters {
-  overflow-y: auto;
-}
-
-aside.filters h2,
-aside.filters h3 {
-  font-weight: normal;
-  line-height: 2em;
-  margin: 0;
-}
-
 aside.filters h3 {
   color: var(--f_med);
 }

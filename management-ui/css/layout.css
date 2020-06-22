@@ -6,15 +6,24 @@ body {
 
 html,
 body,
-#root,
-#root > div {
+div {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+header div,
+main div,
+footer div {
+  height: initial;
+  display: block;
+  flex-direction: initial;
 }
 
 main {
-  height: calc(100% - 2em);
-  box-sizing: border-box;
+  flex: 1;
   padding: 1em 0.5em;
+  min-height: 0;
 }
 
 /* COLUMN PAGE LAYOUT */
@@ -23,6 +32,10 @@ main.columns {
   flex-direction: row;
 }
 
-main.columns > *:not(::last-child) {
+main.columns > * {
+  overflow-y: auto;
+}
+
+main.columns > *:not(:last-child) {
   margin-right: 0.5em;
 }
