@@ -1,0 +1,7 @@
+{
+  "name": "@mindofmatthew/management-ui",
+  "version": "0.0.1",
+  "description": "Library of CSS styles and React components initially designed for midi.management",
+  "author": "Matthew Kaney",
+  "license": "MIT"
+}
