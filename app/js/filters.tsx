@@ -4,23 +4,9 @@ import { MessageTypes } from './names/messageTypes';
 const memoizedFilters = memo(Filters);
 export { memoizedFilters as Filters };
 
-function Filters({
-  midiFilter,
-  setMidiFilter,
-  statusFilter,
-  setStatusFilter,
-  midiInputs,
-}) {
+function Filters({ statusFilter, setStatusFilter }) {
   return (
     <aside className="filters">
-      <h3>Filter Input</h3>
-      <FilterList filter={midiFilter} changeFilter={setMidiFilter}>
-        {midiInputs.map(({ id, name, manufacturer }) => (
-          <Filter key={id} id={id}>
-            {manufacturer} {name}
-          </Filter>
-        ))}
-      </FilterList>
       <h3>Filter Message Type</h3>
       <FilterList filter={statusFilter} changeFilter={setStatusFilter}>
         <StatusFilter id={0x80} />

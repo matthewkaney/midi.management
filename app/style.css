@@ -97,18 +97,6 @@ button:focus {
 }
 
 /* SITE HEADER */
-/* 
-#root > div > header {
-  height: 1em;
-  padding: 0.5em 0;
-  background: var(--b_low);
-} */
-
-/* #root > div > header h1 {
-  padding: 0 1em;
-  margin: 0;
-} */
-
 #root > div > header h1::before {
   content: 'midi.management/';
   color: var(--f_med);
@@ -168,21 +156,17 @@ article.midi-message time {
 }
 
 article.midi-message h2 {
-  margin: 0;
-  font-weight: normal;
-  padding: 0.5em;
   flex-grow: 1;
 }
 
 article.midi-message h3 {
-  font-weight: normal;
   margin: 0;
   display: inline-block;
   color: var(--f_med);
 }
 
 article.midi-message .message-info {
-  padding: 0 1em;
+  padding: 0 0.5em;
   margin-bottom: -2px;
   display: flex;
   flex-wrap: wrap;
@@ -190,8 +174,6 @@ article.midi-message .message-info {
 
 article.midi-message .message-info div {
   flex-grow: 1;
-  padding: 0.5em 0;
-  height: 1em;
 }
 
 aside.filters h3 {
