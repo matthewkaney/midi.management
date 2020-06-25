@@ -1,9 +1,11 @@
 /** FORM ELEMENTS **/
 
-/* Buttons */
-
+/* Generic Form Element Styling */
 button,
-input[type='submit'] {
+input {
+  border: solid 1px var(--b2);
+  padding: var(--gutter) 0.5em;
+  height: 100px;
 }
 
 /* Text Input */
