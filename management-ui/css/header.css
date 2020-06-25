@@ -17,6 +17,10 @@ header .right {
   justify-content: flex-end;
 }
 
+header .right > * {
+  margin-right: 0.5em;
+}
+
 header .right > :last-child {
   margin-right: 0;
 }

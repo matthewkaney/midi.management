@@ -138,6 +138,11 @@ export function MidiMonitor() {
   return (
     <>
       <Header>
+        <input />
+        <select>
+          <option>Test 1</option>
+          <option>Test 2...</option>
+        </select>
         <button
           onClick={() => {
             setMessages([]);

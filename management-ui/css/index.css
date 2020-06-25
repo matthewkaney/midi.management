@@ -1,6 +1,8 @@
 @import './layout.css';
 @import './header.css';
-@import './input.css';
+
+@import './form.css';
+
 @import './scrollbars.css';
 
 /* BASIC HTML RULES */
