@@ -7,6 +7,9 @@ import { MidiMonitor } from './routes/monitor';
 import { MidiViewer } from './routes/viewer';
 import { MidiLive } from './routes/live';
 
+// Dev Only
+import { StyleGuide } from '../../management-ui/styleguide';
+
 function MidiManagement() {
   return (
     <Router>
@@ -14,6 +17,8 @@ function MidiManagement() {
       <MidiViewer path="viewer" />
       <MidiMonitor path="monitor" />
       <MidiLive path="live/*" />
+
+      {process.env.NODE_ENV === 'development' ? <StyleGuide path="ui" /> : null}
     </Router>
   );
 }

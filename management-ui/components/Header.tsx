@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 
 type HeaderProps = {
   title: React.ReactNode;
-  children: React.ReactNode;
+  menu?: React.ReactNode;
+  children?: React.ReactNode;
 };
 
-export function Header({ title, children }: HeaderProps) {
+export function Header({ title, menu, children }: HeaderProps) {
   return (
     <header>
-      {title}
+      {menu ? <Menu current={<h1>{title}</h1>}>{menu}</Menu> : <h1>{title}</h1>}
       <div className="right">{children}</div>
     </header>
   );

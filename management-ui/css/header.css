@@ -1,8 +1,7 @@
 header {
-  background: var(--b_low);
+  background: var(--bg0);
   height: 2em;
   display: flex;
-  --input-color: var(--b_med);
 }
 
 header button {

@@ -4,7 +4,7 @@
   /* SPACING */
   /* Text metrics: Font size determines most every other aspect of scale */
   font-size: 16px;
-  line-height: 2em;
+  line-height: 2;
 
   /* Variables for gutters and "stolen" spacing around components */
   --gutter: 2px;
@@ -17,8 +17,4 @@
   --bg1: var(--b_low);
   --bg2: var(--b_med);
   --bg3: var(--b_high);
-}
-
-body {
-  background-color: var(--bg3) !important;
 }

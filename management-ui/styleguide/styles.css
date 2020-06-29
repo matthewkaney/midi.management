@@ -1,0 +1,12 @@
+.style-guide {
+  background-color: var(--bg0);
+  background-image: repeating-linear-gradient(
+    var(--bg0) 0px,
+    var(--bg0) calc(2em - 2px),
+    var(--bg1) calc(2em - 2px),
+    var(--bg1) 2em
+  );
+  background-position-y: 1em;
+  background-repeat: no-repeat;
+  background-attachment: local;
+}

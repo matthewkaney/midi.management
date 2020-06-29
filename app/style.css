@@ -33,10 +33,10 @@
   --c-14: #bf00ac;
   --c-15: #ae04c3;
 
-  --background: var(--l-0);
-  --b_low: var(--l-1);
-  --b_med: var(--l-2);
-  --b_high: var(--l-3);
+  --bg0: var(--l-0);
+  --bg1: var(--l-1);
+  --bg2: var(--l-2);
+  --bg3: var(--l-3);
   --f_high: var(--d-0);
   --f_med: var(--d-5);
   --f_low: var(--l-5);
@@ -68,35 +68,14 @@ body {
   background: var(--background);
 }
 
-/* INPUT UI */
-
-button {
-  background: var(--input-color);
-  border: none;
-  height: 1em;
-  box-sizing: content-box;
-  padding: 0.5em 0.5em calc(0.5em - 2px) 0.5em;
-  margin: 0 0 2px;
-}
-
-button:hover {
-  background: var(--active-input-color);
-}
-
-button:focus {
-  outline: none;
-}
-
-/* LAYOUT BLOCKS */
-
-.scroll {
-  flex: 1;
-  padding: 0;
-  margin: 0;
-  overflow-y: auto;
-}
-
 /* SITE HEADER */
+#root > div > header {
+  --bg0: var(--l-1);
+  --bg1: var(--l-2);
+  --bg2: var(--l-3);
+  --bg3: var(--l-4);
+}
+
 #root > div > header h1::before {
   content: 'midi.management/';
   color: var(--f_med);

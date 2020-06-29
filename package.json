@@ -7,7 +7,7 @@
     "build": "parcel build app/index.html --dist-dir public --no-source-maps",
     "deploy": "npm run clean && npm run build && firebase deploy"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@musedlab/midi": "file:../music-interface-toolkit/packages/midi",

@@ -24,18 +24,19 @@ main {
   flex: 1;
   padding: 1em 0.5em;
   min-height: 0;
+  overflow-y: auto;
 }
 
 /* COLUMN PAGE LAYOUT */
-main.columns {
+.columns {
   display: flex;
   flex-direction: row;
 }
 
-main.columns > * {
+.columns > * {
   overflow-y: auto;
 }
 
-main.columns > *:not(:last-child) {
+.columns > *:not(:last-child) {
   margin-right: 0.5em;
 }
