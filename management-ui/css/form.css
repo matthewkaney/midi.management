@@ -3,11 +3,12 @@
 /* Generic Form Element Styling */
 button,
 input {
-  border: solid 1px var(--bg2);
-  padding-top: calc(0.5em - var(--gutter) * var(--steal-top) - 1px);
-  padding-bottom: calc(0.5em - var(--gutter) * var(--steal-bottom) - 1px);
-  padding-left: calc(1ch - 1px);
-  padding-right: calc(1ch - 1px);
+  box-shadow: inset 0 0 0 1px var(--bg2);
+  border: none;
+  padding-top: calc(0.5em - var(--gutter) * var(--steal-top));
+  padding-bottom: calc(0.5em - var(--gutter) * var(--steal-bottom));
+  padding-left: 1ch;
+  padding-right: 1ch;
   margin-top: calc(var(--gutter) * var(--steal-top));
   margin-bottom: calc(var(--gutter) * var(--steal-bottom));
   vertical-align: top;
@@ -22,28 +23,14 @@ button {
 button:focus,
 input:focus,
 textarea:focus {
-  padding-top: calc(0.5em - var(--gutter) * var(--steal-top) - 2px);
-  padding-bottom: calc(0.5em - var(--gutter) * var(--steal-bottom) - 2px);
-  padding-left: calc(1ch - 2px);
-  padding-right: calc(1ch - 2px);
   outline: none;
-  border: solid 2px var(--active-input-color);
+  box-shadow: inset 0 0 0 2px var(--active-input-color);
 }
 
 button:hover {
-  border-color: var(--active-input-color);
+  background: var(--active-input-color);
+  box-shadow: none;
 }
-
-/* button {
-  background: var(--input-color);
-  border: none;
-  height: 1em;
-  box-sizing: content-box;
-  padding: 0.5em 0.5em calc(0.5em - 2px) 0.5em;
-  margin: 0 0 2px;
-} */
-
-/* Text Input */
 
 /* Select */
 select {
@@ -54,7 +41,7 @@ select {
 }
 
 select::after {
-  content: 'TEST';
+  content: "TEST";
 }
 
 select > :last-child {

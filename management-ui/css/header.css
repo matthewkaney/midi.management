@@ -4,20 +4,17 @@ header {
   display: flex;
 }
 
-header button {
-  padding: calc(0.5em - 2px) 0.5em;
-  margin: 2px 0.5em;
-}
-
 header .right {
-  margin-right: 0.5em;
+  --steal-top: 1;
+  --steal-bottom: 1;
+  margin-right: 1ch;
   flex: 1;
   display: flex;
   justify-content: flex-end;
 }
 
 header .right > * {
-  margin-right: 0.5em;
+  margin-right: 1ch;
 }
 
 header .right > :last-child {
@@ -29,28 +26,28 @@ header .right > :last-child {
 }
 
 .dropdown .head {
-  padding: 0 2em 0 0.5em;
+  padding: 0 4ch 0 1ch;
   overflow: hidden;
   cursor: pointer;
   position: relative;
 }
 
 .dropdown .head::after {
-  content: '';
+  content: "";
   background: var(--f_high);
-  -webkit-mask-image: url('../icons/chevron.svg');
-  mask-image: url('../icons/chevron.svg');
+  -webkit-mask-image: url("../icons/chevron.svg");
+  mask-image: url("../icons/chevron.svg");
   width: 1em;
   height: 1em;
   position: absolute;
   top: 0.5em;
-  right: 0.5em;
+  right: 1ch;
 }
 
 .dropdown .head:hover,
 .dropdown.open .head {
   background: var(--b_med);
-  padding-right: calc(2em - 2px);
+  padding-right: calc(1ch - 2px);
   border-right: solid 2px var(--background);
 }
 
