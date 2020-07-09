@@ -64,10 +64,6 @@
   font-family: 'Roboto Mono', monospace;
 }
 
-body {
-  background: var(--background);
-}
-
 /* SITE HEADER */
 #root > div > header {
   --bg0: var(--l-1);
@@ -171,46 +167,6 @@ aside.filters li {
 
 aside.filters label {
   display: flex;
-}
-
-input[type='checkbox'].toggle {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  margin: 0;
-}
-
-input[type='checkbox'].toggle + * {
-  display: inline-block;
-  flex: 1;
-  background: var(--input-color);
-  color: var(--f_low);
-  padding: 0.5em 0.5em 0.5em 2em;
-  position: relative;
-  line-height: calc(1em - 2px);
-}
-
-input[type='checkbox']:checked.toggle + * {
-  background: var(--active-input-color);
-  color: var(--f_inv);
-}
-
-input[type='checkbox'].toggle + *::before {
-  content: '';
-  position: absolute;
-  top: 0.5em;
-  left: 0.5em;
-  width: 1em;
-  height: 1em;
-  background: currentColor;
-  -webkit-mask-image: url('../management-ui/icons/x.svg');
-  mask-image: url('../management-ui/icons/x.svg');
-}
-
-input[type='checkbox']:checked.toggle + *::before {
-  content: '';
-  -webkit-mask-image: url('../management-ui/icons/o.svg');
-  mask-image: url('../management-ui/icons/o.svg');
 }
 
 .piano-ui {

@@ -7,6 +7,10 @@
 @import './scrollbars.css';
 
 /* BASIC HTML RULES */
+body {
+  background: var(--bg0);
+}
+
 h1,
 h2,
 h3,

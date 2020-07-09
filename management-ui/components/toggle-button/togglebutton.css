@@ -1,0 +1,52 @@
+label.toggle {
+  overflow: hidden;
+  margin-top: calc(var(--gutter) * var(--steal-top));
+  margin-bottom: calc(var(--gutter) * var(--steal-bottom));
+  display: inline-flex;
+}
+
+label.toggle > * {
+  margin-top: calc(-1 * var(--gutter) * var(--steal-top));
+  margin-bottom: calc(-1 * var(--gutter) * var(--steal-bottom));
+}
+
+label.toggle > input[type='checkbox'] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+  width: 0;
+  height: 0;
+}
+
+label.toggle > input[type='checkbox'] + * {
+  display: block;
+  background: var(--bg1);
+  color: var(--f_low);
+  padding: 0 1ch 0 4ch;
+  position: relative;
+}
+
+label.toggle > input[type='checkbox']:checked + * {
+  background: var(--active-input-color);
+  color: var(--f_inv);
+}
+
+label.toggle > input[type='checkbox'] + *::before {
+  content: '';
+  position: absolute;
+  top: 0.5em;
+  left: 1ch;
+  width: 1em;
+  height: 1em;
+  background: currentColor;
+  -webkit-mask-image: url('../../icons/x.svg');
+  mask-image: url('../../icons/x.svg');
+}
+
+label.toggle > input[type='checkbox']:checked + *::before {
+  -webkit-mask-image: url('../../icons/o.svg');
+  mask-image: url('../../icons/o.svg');
+}

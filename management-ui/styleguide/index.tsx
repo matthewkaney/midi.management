@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Header } from '../components/Header';
 
 import './styles.css';
+import { ToggleButton } from '../components/toggle-button';
 
 export function StyleGuide() {
+  const [grid, setGrid] = useState(true);
+
   return (
     <>
-      <Header title="ui" />
-      <main className="style-guide">
+      <Header title="ui">
+        <ToggleButton value={grid} onChange={setGrid}>
+          Grid
+        </ToggleButton>
+      </Header>
+      <main className={grid ? 'style-guide' : ''}>
         <section className="columns">
           <div style={{ flex: 1 }}>
             <BasicTags />
