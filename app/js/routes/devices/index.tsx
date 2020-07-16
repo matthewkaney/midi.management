@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 import {
   receiveMidiInputs,
   receiveMidiOutputs,
-  receiveMIDI,
-} from '@musedlab/midi/web';
+  receiveMIDI
+} from "@musedlab/midi/web";
 
-import { Header } from '../../components/header/Header';
+import { MIDISupport } from "../../midi-ui/index";
 
-import './style.css';
+import { Header } from "../../components/header/Header";
+
+import "./style.css";
 
 export function MidiDevices() {
   const [inputs, setInputs] = useState<MIDIInput[]>([]);
   useEffect(
     () =>
-      receiveMidiInputs((i) => {
+      receiveMidiInputs(i => {
         setInputs(i);
       }),
     [setInputs]
@@ -23,7 +25,7 @@ export function MidiDevices() {
   const [outputs, setOutputs] = useState<MIDIOutput[]>([]);
   useEffect(
     () =>
-      receiveMidiOutputs((o) => {
+      receiveMidiOutputs(o => {
         setOutputs(o);
       }),
     [setOutputs]
@@ -32,24 +34,26 @@ export function MidiDevices() {
   return (
     <>
       <Header />
-      <main className="columns">
-        <div className="device-list">
-          <h2>Inputs</h2>
-          <ul>
-            {inputs.map((i) => (
-              <DeviceListing key={i.id} device={i} />
-            ))}
-          </ul>
-        </div>
-        <div className="device-list">
-          <h2>Outputs</h2>
-          <ul>
-            {outputs.map((o) => (
-              <DeviceListing key={o.id} device={o} />
-            ))}
-          </ul>
-        </div>
-      </main>
+      <MIDISupport>
+        <main className="columns">
+          <div className="device-list">
+            <h2>Inputs</h2>
+            <ul>
+              {inputs.map(i => (
+                <DeviceListing key={i.id} device={i} />
+              ))}
+            </ul>
+          </div>
+          <div className="device-list">
+            <h2>Outputs</h2>
+            <ul>
+              {outputs.map(o => (
+                <DeviceListing key={o.id} device={o} />
+              ))}
+            </ul>
+          </div>
+        </main>
+      </MIDISupport>
     </>
   );
 }
@@ -63,7 +67,7 @@ function DeviceListing({ device }: DeviceListingProps) {
     <li>
       <div className={`name ${device.type}`}>
         {device.name}
-        {device.type === 'input' ? <TinyMonitor device={device} /> : null}
+        {device.type === "input" ? <TinyMonitor device={device} /> : null}
       </div>
       {device.manufacturer ? `: ${device.manufacturer}` : null}
     </li>
@@ -80,7 +84,7 @@ function TinyMonitor({ device }: TinyMonitorProps) {
   useEffect(() => {
     let timer: number;
 
-    const closeMIDI = receiveMIDI((m) => {
+    const closeMIDI = receiveMIDI(m => {
       window.clearTimeout(timer);
       timer = window.setTimeout(() => {
         setIsOn(false);
@@ -95,5 +99,5 @@ function TinyMonitor({ device }: TinyMonitorProps) {
     };
   }, [device, setIsOn]);
 
-  return <div className={`tiny-monitor${isOn ? ' on' : ''}`} />;
+  return <div className={`tiny-monitor${isOn ? " on" : ""}`} />;
 }
