@@ -1,0 +1,10 @@
+.landing-header h1 {
+  font-size: 3em;
+  margin: 0 auto;
+  width: 15ch;
+}
+
+.landing-header p {
+  margin: 0 auto 1em;
+  width: 45ch;
+}
