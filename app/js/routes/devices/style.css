@@ -13,7 +13,7 @@
 
 .device-list li {
   line-height: 2em;
-  background: var(--b_low);
+  background: var(--bg1);
   list-style: none;
   margin-bottom: 2px;
   overflow: hidden;
@@ -22,7 +22,7 @@
 .device-list li::after {
   margin-bottom: -2px;
   display: block;
-  content: '';
+  content: "";
 }
 
 .device-list li > div {
@@ -30,7 +30,7 @@
 }
 
 .device-list li .name {
-  background: var(--b_med);
+  background: var(--bg2);
 }
 
 .device-list li .name.input {

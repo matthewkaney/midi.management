@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { RouteComponentProps } from "@reach/router";
+
 import {
   receiveMidiInputs,
   receiveMidiOutputs,
@@ -12,7 +14,7 @@ import { Header } from "../../components/header/Header";
 
 import "./style.css";
 
-export function MidiDevices() {
+export function MidiDevices(props: RouteComponentProps) {
   const [inputs, setInputs] = useState<MIDIInput[]>([]);
   useEffect(
     () =>
