@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { MessageList } from './MessageList';
 
 export function SourceMessageGroup({ name, type, messages }) {

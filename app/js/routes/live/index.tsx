@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { navigate, useMatch, RouteComponentProps } from '@reach/router';
 
 import { PolySynth, Frequency } from 'tone';

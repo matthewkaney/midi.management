@@ -1,4 +1,3 @@
-import React from 'react';
 import { isChannelMessage, isSystemExclusive } from '@musedlab/midi/messages';
 import { isMetaMessage } from '@musedlab/midi/file/messages';
 
