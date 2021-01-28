@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 
 type HeaderProps = {
   title: React.ReactNode;
@@ -24,12 +24,13 @@ export function Menu({ current, children }: MenuProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className={`dropdown${open ? ' open' : ''}`} tabIndex={0}>
+    <div className={`dropdown${open ? " open" : ""}`} tabIndex={0}>
       <div
         className="head"
         onClick={() => {
-          setOpen((o) => !o);
-        }}>
+          setOpen(o => !o);
+        }}
+      >
         {current}
       </div>
       <nav>

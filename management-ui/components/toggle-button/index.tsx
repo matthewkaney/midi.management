@@ -1,6 +1,4 @@
-import React from 'react';
-
-import './togglebutton.css';
+import "./togglebutton.css";
 
 type ToggleButtonProps = {
   onChange: (value: boolean) => any;
@@ -13,7 +11,7 @@ export function ToggleButton({
   onChange,
   value,
   children,
-  disabled = false,
+  disabled = false
 }: ToggleButtonProps) {
   return (
     <label className="toggle">
