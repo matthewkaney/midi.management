@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   isMetaMessage,
   TEXT_EVENT,

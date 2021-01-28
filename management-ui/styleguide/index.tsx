@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 
-import { Header } from '../components/Header';
+import { Header } from "../components/Header";
 
-import './styles.css';
-import { ToggleButton } from '../components/toggle-button';
+import "./styles.css";
+import { ToggleButton } from "../components/toggle-button";
 
 export function StyleGuide() {
   const [grid, setGrid] = useState(true);
@@ -15,12 +15,12 @@ export function StyleGuide() {
           Grid
         </ToggleButton>
       </Header>
-      <main className={grid ? 'style-guide' : ''}>
+      <main className={grid ? "style-guide" : ""}>
         <section className="columns">
           <div style={{ flex: 1 }}>
             <BasicTags />
           </div>
-          <div style={{ flex: 1, '--steal-bottom': 1 } as React.CSSProperties}>
+          <div style={{ flex: 1, "--steal-bottom": 1 } as React.CSSProperties}>
             <BasicTags />
           </div>
         </section>

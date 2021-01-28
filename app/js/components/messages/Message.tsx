@@ -1,5 +1,4 @@
-import React from 'react';
-import { MIDIData, MIDIMessage } from '@musedlab/midi';
+import { MIDIData, MIDIMessage } from "@musedlab/midi";
 
 export type MessageDisplayProps = {
   message: MIDIMessage & { timeLabel: string; sourceLabel: string };
@@ -41,8 +40,8 @@ export function Hex({ data }: HexProps) {
   return (
     <>
       {[...data]
-        .map(n => n.toString(16).padStart(2, '0'))
-        .join(' ')
+        .map(n => n.toString(16).padStart(2, "0"))
+        .join(" ")
         .toUpperCase()}
     </>
   );

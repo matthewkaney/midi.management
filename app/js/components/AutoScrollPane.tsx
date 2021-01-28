@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useLayoutEffect } from 'react';
+import { useState, useRef, useCallback, useLayoutEffect } from "react";
 
 export function AutoScrollPane({ children }: { children: React.ReactNode }) {
   const [auto, setAuto] = useState(true);

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { fromDataBytes } from '@musedlab/midi/data';
 import {
   getChannel,

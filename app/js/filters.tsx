@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { cloneElement, memo } from 'react';
 import { MessageTypes } from './names/messageTypes';
 
 const memoizedFilters = memo(Filters);
@@ -36,7 +36,7 @@ function FilterList({ filter, changeFilter, children }) {
   return (
     <ul>
       {children.map((child) =>
-        React.cloneElement(child, {
+        cloneElement(child, {
           key: child.props.id,
           value: filter[child.props.id],
           onChange: (value) => {

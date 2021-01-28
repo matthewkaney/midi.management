@@ -1,10 +1,9 @@
-import React from "react";
 import { useLocation, Link } from "@reach/router";
 
 import {
   Header as BaseHeader,
   Menu,
-  MenuItem,
+  MenuItem
 } from "../../../../management-ui/components/Header";
 
 const links = ["devices", "monitor"];
@@ -20,7 +19,7 @@ export function Header({ children }: HeaderProps) {
   return (
     <BaseHeader
       title={app}
-      menu={links.map((l) => (
+      menu={links.map(l => (
         <MenuItem key={l}>
           <Link to={`/${l}`}>{l}</Link>
         </MenuItem>

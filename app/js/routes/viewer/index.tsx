@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import { MIDIMessage } from '@musedlab/midi';
 import { decodeMidiFile } from '@musedlab/midi/file';
