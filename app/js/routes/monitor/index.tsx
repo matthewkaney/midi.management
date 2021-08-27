@@ -1,21 +1,21 @@
-import { useState, useEffect, useCallback } from 'react';
-import { produce } from 'immer';
+import { useState, useEffect, useCallback } from "react";
+import { produce } from "immer";
 
-import { Header } from '../../components/header/Header';
+import { Header } from "../../components/header/Header";
 
-import { MIDIMessage } from '@musedlab/midi';
-import { receiveMIDI, receiveMidiInputs } from '@musedlab/midi/web';
+import { MIDIMessage } from "@musedlab/midi";
+import { receiveMIDI, receiveMidiInputs } from "@musedlab/midi/web";
 
-import { MessageTypes } from '../../names/messageTypes';
+import { MessageTypes } from "../../names/messageTypes";
 
-import { SourceMessageGroup } from '../../components/messages/SourceMessageGroup';
-import { LiveMessage } from '../../components/messages/LiveMessage';
+import { SourceMessageGroup } from "../../components/messages/SourceMessageGroup";
+import { LiveMessage } from "../../components/messages/LiveMessage";
 
-import { Filters } from '../../filters';
+import { Filters } from "../../filters";
 
-import { useSlowState } from '../../useSlowState';
+import { useSlowState } from "../../useSlowState";
 
-import { AutoScrollPane } from '../../components/AutoScrollPane';
+import { AutoScrollPane } from "../../components/AutoScrollPane";
 
 let messageId = 0;
 
@@ -27,7 +27,7 @@ export function id() {
 
 let defaultStatusFilter: { [type: number]: boolean };
 
-let savedStatusFilter = localStorage.getItem('type-filter');
+let savedStatusFilter = localStorage.getItem("type-filter");
 if (savedStatusFilter) {
   defaultStatusFilter = JSON.parse(savedStatusFilter);
 } else {
@@ -43,7 +43,7 @@ export function MidiMonitor() {
   let [statusFilter, setStatusFilter] = useState(defaultStatusFilter);
 
   useEffect(() => {
-    localStorage.setItem('type-filter', JSON.stringify(statusFilter));
+    localStorage.setItem("type-filter", JSON.stringify(statusFilter));
   }, [statusFilter]);
 
   // List of connected Midi Inputs and related filters
@@ -51,8 +51,8 @@ export function MidiMonitor() {
   let [midiFilter, setMidiFilter] = useState({});
 
   useEffect(() => {
-    return receiveMidiInputs((inputs) => {
-      setMidiFilter((filter) => {
+    return receiveMidiInputs(inputs => {
+      setMidiFilter(filter => {
         let newInputs: { [id: string]: boolean } = {};
 
         for (let input of inputs) {
@@ -79,13 +79,11 @@ export function MidiMonitor() {
   let [messages, setMessages] = useSlowState<InputMessageList[]>([]);
 
   let pushMessage = useCallback(
-    (message) => {
+    message => {
       setMessages(
         produce((inputs: InputMessageList[]) => {
-          if (
-            inputs.length > 0 &&
-            inputs[inputs.length - 1].id === message.input.id
-          ) {
+          console.log(message);
+          if (inputs.length > 0) {
             let input = inputs[inputs.length - 1];
             let messageGroup = input.messages[input.messages.length - 1];
 
@@ -95,8 +93,11 @@ export function MidiMonitor() {
               input.messages.push([message]);
             }
           } else {
-            let { id, name, manufacturer } = message.input;
-            inputs.push({ id, name, manufacturer, messages: [[message]] });
+            inputs.push({
+              id: "0",
+              name: "MIDI Input",
+              messages: [[message]]
+            });
           }
         })
       );
@@ -106,31 +107,29 @@ export function MidiMonitor() {
 
   useEffect(
     () =>
-      receiveMIDI((m) => {
+      receiveMIDI(m => {
         let [status] = m.data;
         let type = status < 0xf0 ? status & 0xf0 : status;
 
-        console.log(m);
+        //if (statusFilter[type] && m.input && midiFilter[m.input.id]) {
+        // Format time label
+        let formatter = new Intl.DateTimeFormat(undefined, {
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric"
+        });
+        let date = new Date(performance.timeOrigin + m.time);
+        let timeLabel = formatter
+          .formatToParts(date)
+          .map(part =>
+            part.type === "second"
+              ? (date.getSeconds() + date.getMilliseconds() / 1000).toFixed(3)
+              : part.value
+          )
+          .join("");
 
-        if (statusFilter[type] && m.input && midiFilter[m.input.id]) {
-          // Format time label
-          let formatter = new Intl.DateTimeFormat(undefined, {
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-          });
-          let date = new Date(performance.timeOrigin + m.time);
-          let timeLabel = formatter
-            .formatToParts(date)
-            .map((part) =>
-              part.type === 'second'
-                ? (date.getSeconds() + date.getMilliseconds() / 1000).toFixed(3)
-                : part.value
-            )
-            .join('');
-
-          pushMessage({ ...m, timeLabel, id: id() });
-        }
+        pushMessage({ ...m, timeLabel, id: id() });
+        //}
       }),
     [statusFilter, midiFilter, setMessages]
   );
@@ -138,15 +137,11 @@ export function MidiMonitor() {
   return (
     <>
       <Header>
-        <input />
-        <select>
-          <option>Test 1</option>
-          <option>Test 2...</option>
-        </select>
         <button
           onClick={() => {
             setMessages([]);
-          }}>
+          }}
+        >
           Clear
         </button>
       </Header>
@@ -163,13 +158,13 @@ export function MidiMonitor() {
             ))}
           </AutoScrollPane>
         </section>
-        <Filters
+        {/* <Filters
           midiFilter={midiFilter}
           setMidiFilter={setMidiFilter}
           statusFilter={statusFilter}
           setStatusFilter={setStatusFilter}
           midiInputs={midiInputs}
-        />
+        /> */}
       </main>
     </>
   );

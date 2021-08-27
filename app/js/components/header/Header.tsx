@@ -16,16 +16,5 @@ export function Header({ children }: HeaderProps) {
   const { pathname } = useLocation();
   const app = pathname.split("/")[1];
 
-  return (
-    <BaseHeader
-      title={app}
-      menu={links.map(l => (
-        <MenuItem key={l}>
-          <Link to={`/${l}`}>{l}</Link>
-        </MenuItem>
-      ))}
-    >
-      {children}
-    </BaseHeader>
-  );
+  return <BaseHeader title={app}>{children}</BaseHeader>;
 }

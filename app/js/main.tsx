@@ -13,9 +13,9 @@ import { StyleGuide } from "../../management-ui/styleguide";
 function MidiManagement() {
   return (
     <Router>
-      {/* <MidiDevices path="devices" /> */}
+      <MidiDevices path="devices" />
       {/* <MidiViewer path="viewer" /> */}
-      {/* <MidiMonitor path="monitor" /> */}
+      <MidiMonitor path="monitor" />
       {/* <MidiLive path="live/*" /> */}
       <LandingPage path="/" />
 
