@@ -1,7 +1,7 @@
 import { MIDIData, MIDIMessage } from "@musedlab/midi";
 
 export type MessageDisplayProps = {
-  message: MIDIMessage & { timeLabel: string; sourceLabel: string };
+  message: MIDIMessage;
 };
 
 export function UnknownMessage({ message }: MessageDisplayProps) {
@@ -25,7 +25,6 @@ export function Message({ message, name, children = undefined }: MessageProps) {
       <header>
         <time>{message.timeLabel}</time>
         <h2>{name}</h2>
-        <div className="source">{message.sourceLabel}</div>
       </header>
       <div className="message-info">{children}</div>
     </article>

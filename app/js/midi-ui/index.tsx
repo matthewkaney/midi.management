@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import "@musedlab/midi/web";
 
 type MIDISupportProps = {
+  sysex?: boolean;
   notSupported?: React.ReactNode;
   notEnabled?: React.ReactNode;
   children: React.ReactNode;
 };
 
-export function MIDISupport({
+export function OldMIDISupport({
   notSupported = null,
   notEnabled = null,
   children
@@ -51,4 +52,14 @@ export function MIDISupport({
   // }
 
   return <>{"requestMIDIAccess" in navigator ? children : notSupported}</>;
+}
+
+export function MIDISupport({ sysex, children }: MIDISupportProps) {
+  const [access, setAccess] = useState<MIDIAccess>();
+
+  useEffect(() => {
+    navigator.requestMIDIAccess({ sysex: true });
+  });
+
+  return <>{children}</>;
 }

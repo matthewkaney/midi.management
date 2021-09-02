@@ -38,7 +38,43 @@ if (savedStatusFilter) {
   }
 }
 
+import { MIDISupport } from "../../midi-ui";
+import { useMIDIInput } from "../../midi-ui/hooks";
+
 export function MidiMonitor() {
+  const [messages, setMessages] = useState<MIDIMessage[]>([]);
+
+  useMIDIInput(message => {
+    setMessages(ms => [...ms, message]);
+  });
+
+  return (
+    <>
+      <Header>
+        <button
+          onClick={() => {
+            setMessages([]);
+          }}
+        >
+          Clear
+        </button>
+      </Header>
+      <MIDISupport>
+        <main className="columns">
+          <section className="monitor">
+            <AutoScrollPane>
+              {messages.map((message, i) => (
+                <LiveMessage message={message} key={i} />
+              ))}
+            </AutoScrollPane>
+          </section>
+        </main>
+      </MIDISupport>
+    </>
+  );
+}
+
+export function OldMidiMonitor() {
   // Filters for different message types
   let [statusFilter, setStatusFilter] = useState(defaultStatusFilter);
 

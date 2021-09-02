@@ -1,4 +1,4 @@
-@import '../management-ui/css/index.css';
+@import "../management-ui/css/index.css";
 
 :root {
   /* https://gka.github.io/palettes/#/12|d|f5f3f0,b1aba2|68635d,2c2824|1|1 */
@@ -61,7 +61,7 @@
 * {
   color: var(--f_high);
   font-size: 16px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
 }
 
 /* SITE HEADER */
@@ -73,7 +73,7 @@
 }
 
 #root > div > header h1::before {
-  content: 'midi.management/';
+  content: "midi.management/";
   color: var(--f_med);
 }
 
@@ -107,7 +107,7 @@
 }
 
 article.midi-message {
-  background: var(--b_low);
+  background: var(--bg1);
   overflow: hidden;
 }
 
@@ -119,12 +119,12 @@ article.midi-message header {
   height: 2em;
   padding: 0;
   display: flex;
-  background: var(--b_low);
+  background: var(--bg1);
 }
 
 article.midi-message time {
   padding: 0.5em;
-  background: var(--b_med);
+  background: var(--bg2);
   color: var(--f_med);
   text-transform: lowercase;
   line-height: 1em;
