@@ -1,11 +1,11 @@
 ::-webkit-scrollbar {
   width: 1em;
   height: 1em;
-  background-color: var(--b_low);
+  background-color: var(--bg0);
   border-left: solid 2px var(--background);
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--b_med);
+  background-color: var(--bg1);
   border-left: solid 2px var(--background);
 }
