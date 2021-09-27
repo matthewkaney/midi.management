@@ -63,3 +63,24 @@ export function MIDISupport({ sysex, children }: MIDISupportProps) {
 
   return <>{children}</>;
 }
+
+interface MIDIDeviceProps {
+  device: string;
+  children?: React.ReactNode;
+}
+
+import { createContext, useContext } from "react";
+
+const midiDeviceContext = createContext<string | null>(null);
+
+export function MIDIDevice({ device, children }: MIDIDeviceProps) {
+  return (
+    <midiDeviceContext.Provider value={device}>
+      {children}
+    </midiDeviceContext.Provider>
+  );
+}
+
+export function useMIDIInput() {
+  const midiDevice = useContext(midiDeviceContext);
+}
